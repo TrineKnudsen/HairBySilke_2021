@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "8nlhbMFWV6ZHTbzCdisvGThLkGczXjZW+F566GhPLoWXdn+kH6pAFgKcVd9S5ZQslvuSOJN15MDvYwbH69sOew==",
+  "dgSpecHash": "GXS+dytH2RYKE4mkqFHCGB9Q+oJHrynsmj8dDxFj8mFEetFgz3/qozEkBGRQqfgnORimO4JVxLuySrIZ3hfH6A==",
   "success": true,
-  "projectFilePath": "C:\\Work\\HairBySilke_2021\\HBS.HairBySilke_2021.Core\\HBS.HairBySilke_2021.Core.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Work\\Eksamen2021\\HairBySilke_2021\\HBS.HairBySilke_2021.Core\\HBS.HairBySilke_2021.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\annec\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.8\\microsoft.netcore.app.host.win-x64.5.0.8.nupkg.sha512"
+  ],
   "logs": []
 }
