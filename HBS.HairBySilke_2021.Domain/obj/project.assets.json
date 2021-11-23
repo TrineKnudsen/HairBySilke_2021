@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {}
+    "net5.0": {
+      "HBS.HairBySilke_2021.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/HBS.HairBySilke_2021.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HBS.HairBySilke_2021.Core.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "HBS.HairBySilke_2021.Core/1.0.0": {
+      "type": "project",
+      "path": "../HBS.HairBySilke_2021.Core/HBS.HairBySilke_2021.Core.csproj",
+      "msbuildProject": "../HBS.HairBySilke_2021.Core/HBS.HairBySilke_2021.Core.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net5.0": []
+    "net5.0": [
+      "HBS.HairBySilke_2021.Core >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\annec\\.nuget\\packages\\": {},
@@ -38,7 +57,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Work\\Eksamen2021\\HairBySilke_2021\\HBS.HairBySilke_2021.Core\\HBS.HairBySilke_2021.Core.csproj": {
+              "projectPath": "C:\\Work\\Eksamen2021\\HairBySilke_2021\\HBS.HairBySilke_2021.Core\\HBS.HairBySilke_2021.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

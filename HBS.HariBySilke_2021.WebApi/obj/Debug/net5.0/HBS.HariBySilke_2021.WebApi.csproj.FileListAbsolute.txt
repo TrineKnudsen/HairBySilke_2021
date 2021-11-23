@@ -202,7 +202,6 @@ C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\scopedcss\bundle\HBS.HariBySilke_2021.WebApi.styles.css
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\staticwebassets\HBS.HariBySilke_2021.WebApi.StaticWebAssets.Manifest.cache
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\HBS.HariBySilke_2021.WebApi.RazorTargetAssemblyInfo.cache
-C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\HBS.HariBySilke_2021.WebApi.csproj.CopyComplete
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\HBS.HariBySilke_2021.WebApi.dll
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\refint\HBS.HariBySilke_2021.WebApi.dll
 C:\Work\Eksamen2021\HairBySilke_2021\HBS.HariBySilke_2021.WebApi\obj\Debug\net5.0\HBS.HariBySilke_2021.WebApi.pdb

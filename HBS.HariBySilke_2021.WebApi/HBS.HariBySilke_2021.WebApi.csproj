@@ -14,4 +14,8 @@
       <Folder Include="DTOs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\HBS.HairBySilke_2021.DataAccess\HBS.HairBySilke_2021.DataAccess.csproj" />
+    </ItemGroup>
+
 </Project>
