@@ -24,8 +24,8 @@ namespace HBS.HairBySilke_2021.Core.Test
         public void Product_SetName_StoreNamesString()
         {
             var treatment = new Treatment();
-            treatment.Name = "Helfarve - langt hår";
-            Assert.Equal("Helfarve - langt hår", treatment.Name);
+            treatment.TreatmentName = "Helfarve - langt hår";
+            Assert.Equal("Helfarve - langt hår", treatment.TreatmentName);
         }
     }
     
