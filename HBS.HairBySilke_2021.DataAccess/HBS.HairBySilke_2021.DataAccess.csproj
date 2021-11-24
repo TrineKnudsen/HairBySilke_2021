@@ -6,11 +6,14 @@
 
     <ItemGroup>
       <Folder Include="Entitites" />
-      <Folder Include="Repositories" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HBS.HairBySilke_2021.Domain\HBS.HairBySilke_2021.Domain.csproj" />
     </ItemGroup>
 
 </Project>
