@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using HBS.HairBySilke_2021.Core.Models;
 
-namespace HBS.HairBySilke_2021.Core.IServices
+namespace HBS.Domain.IRepositories
 {
-    public interface ITreatmentsService
+    public interface ICustomerRepository
     {
         Customer CreateCustomer(Customer customer);
 
