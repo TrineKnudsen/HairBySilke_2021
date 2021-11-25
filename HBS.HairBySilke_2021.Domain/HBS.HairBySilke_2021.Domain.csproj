@@ -9,4 +9,8 @@
       <ProjectReference Include="..\HBS.HairBySilke_2021.Core\HBS.HairBySilke_2021.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
+    </ItemGroup>
+
 </Project>
