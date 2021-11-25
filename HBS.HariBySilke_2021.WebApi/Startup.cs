@@ -1,6 +1,11 @@
+using HBS.Domain.IRepositories;
+using HBS.Domain.Services;
+using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.DataAccess;
+using HBS.HairBySilke_2021.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +30,22 @@ namespace HBS.HariBySilke_2021.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "HBS.HariBySilke_2021.WebApi", Version = "v1"});
             });
+            services.AddScoped<ITreatmentsRepository, TreatmentRepository>();
+            services.AddScoped<ITreatmentsService, TreatmentsService>();
+            services.AddDbContext<MainDbContext>(opt =>
+            {
+                opt.UseSqlite("Data Source =main.db");
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Dev-cors", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,10 +53,11 @@ namespace HBS.HariBySilke_2021.WebApi
         {
             if (env.IsDevelopment())
             {
-                new DbSeeder(ctx).SeedDevelopment();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HBS.HariBySilke_2021.WebApi v1"));
+                app.UseCors("Dev-cors");
+                new DbSeeder(ctx).SeedDevelopment();
             }
             else
             {

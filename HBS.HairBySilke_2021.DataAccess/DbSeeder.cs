@@ -12,6 +12,7 @@ namespace HBS.HairBySilke_2021.DataAccess
         }
         
         public void SeedDevelopment()
+
         {
             _ctx.Database.EnsureDeleted();
             _ctx.Database.EnsureCreated();

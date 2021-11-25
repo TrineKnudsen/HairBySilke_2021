@@ -12,5 +12,6 @@ namespace HBS.HairBySilke_2021.Core.IServices
         Customer UpdateCustomer(Customer customerToUpdate);
 
         void DeleteCustomer(int id);
+        List<Treatment> GetAllTreatments();
     }
 }
