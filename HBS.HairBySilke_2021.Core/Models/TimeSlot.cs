@@ -8,5 +8,7 @@ namespace HBS.HairBySilke_2021.Core.Models
         public int Id { get; set; }
         public TimeRange TimeRange { get; set; }
         public bool IsAvailable { get; set; }
+
+        public Appointment Appointment { get; set; }
     }
 }

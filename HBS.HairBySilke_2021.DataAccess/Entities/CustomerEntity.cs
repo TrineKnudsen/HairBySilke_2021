@@ -10,6 +10,6 @@ namespace HBS.HairBySilke_2021.DataAccess.Entities
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         
-        public List<AppointmentEntity> Appointments { get; set; }
+        public AppointmentEntity Appointments { get; set; }
     }
 }

@@ -8,13 +8,14 @@ namespace HBS.HairBySilke_2021.DataAccess.Entities
     {
         public int Id { get; set; }
         
-        public List<TreatmentEntity> Treatments { get; set; }
+        public Treatment Treatment { get; set; }
+        public int TreatmentId { get; set; }
         
         public int CustomerId { get; set; }
         public CustomerEntity Customer { get; set; }
-        public DateTime DateTime { get; set; }
         public int AdminId { get; set; }
         public AdminEntity Admin { get; set; }
+        public TimeSlot TimeSlot { get; set; }
         
         
     }
