@@ -32,6 +32,7 @@ namespace HBS.HariBySilke_2021.WebApi
         {
             if (env.IsDevelopment())
             {
+                new DbSeeder(ctx).SeedDevelopment();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HBS.HariBySilke_2021.WebApi v1"));
