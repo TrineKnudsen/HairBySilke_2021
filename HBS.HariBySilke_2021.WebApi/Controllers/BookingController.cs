@@ -30,8 +30,10 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 var timeSlots = _bookingService.GetAvailableTimeSlots()
                     .Select(t => new TimeSlotDto
                     {
-                        Start = t.Start,
-                        Duration = t.Duration.TotalHours
+                        DayOfWeek = t.Start.DayOfWeek.ToString(),
+                        Start = t.Start.ToString(),
+                        Duration = t.Duration.TotalHours,
+                        
                     })
                     .ToList();
                 return Ok(new TimeSlotsDto
