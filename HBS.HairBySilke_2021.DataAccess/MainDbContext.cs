@@ -6,6 +6,6 @@ namespace HBS.HairBySilke_2021.DataAccess
     public class MainDbContext : DbContext
     {
         public MainDbContext(DbContextOptions<MainDbContext> options): base(options){}
-        public DbSet<TreatmentEntity> Treatments { get; set; }
+        public virtual DbSet<TreatmentEntity> Treatments { get; set; }
     }
 }

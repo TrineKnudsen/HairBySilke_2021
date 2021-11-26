@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
 {
-    [Route("api/TreatmentController")]
+    [Route("api/treatments")]
     [ApiController]
     public class TreatmentController : ControllerBase
     {

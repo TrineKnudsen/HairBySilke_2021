@@ -47,9 +47,9 @@ namespace HBS.HairBySilke_2021.DataAccess
         }
         
            public void SeedProduction()
-                {
-                    _ctx.Database.EnsureCreated();
-                }
+           { 
+               _ctx.Database.EnsureCreated();
+           }
         
         
     }
