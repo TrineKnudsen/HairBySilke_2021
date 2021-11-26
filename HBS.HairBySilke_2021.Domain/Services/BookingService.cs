@@ -14,9 +14,9 @@ namespace HBS.Domain.Services
             _repo = repo;
         }
         
-        public TimeSlot[] GetAvailableTimeSlots(DateTime maxDateTime)
+        public TimeSlot[] GetAvailableTimeSlots()
         {
-            return _repo.GetAvailableTimeSlots(maxDateTime);
+            return _repo.GetAvailableTimeSlots();
         }
     }
 }

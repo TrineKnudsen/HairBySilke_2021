@@ -19,7 +19,7 @@ namespace HBS.HairBySilke_2021.DataAccess
             _ctx.Database.EnsureDeleted();
             _ctx.Database.EnsureCreated();
 
-            _ctx.Admins.Add(new AdminEntity
+           /* _ctx.Admins.Add(new AdminEntity
             {
                 Name = "Silke"
             });
@@ -51,14 +51,14 @@ namespace HBS.HairBySilke_2021.DataAccess
                 AdminId = 1,
                 CustomerId = 1,
                 TreatmentId = 1,
-                TimeSlot = new TimeSlot
+                TimeSlot = new TimeSlotEntity
                 {
                     IsAvailable = false,
                     TimeRange = new TimeRange(
                         new DateTime(2021, 11,27,9,0,0),
                         new DateTime(2021, 11,27,10,0,0))
                 }
-            });
+            });*/
             _ctx.SaveChanges();
         }
 

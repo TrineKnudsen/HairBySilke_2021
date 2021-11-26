@@ -23,14 +23,15 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<TimeSlotDto> ReadAll(DateTime dateTime, Treatment treatment)
+        public ActionResult<TimeSlotDto> ReadAll()
         {
             try
             {
-                var timeSlots = _bookingService.GetAvailableTimeSlots(dateTime)
+                var timeSlots = _bookingService.GetAvailableTimeSlots()
                     .Select(t => new TimeSlotDto
                     {
-                        TimeRange = t.TimeRange
+                        Start = t.Start,
+                        Duration = t.Duration
                     })
                     .ToList();
                 return Ok(new TimeSlotsDto

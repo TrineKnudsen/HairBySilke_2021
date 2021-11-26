@@ -21,9 +21,10 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public TimeSlot[] GetAvailableTimeSlots(DateTime maxDateTime)
+        public TimeSlot[] GetAvailableTimeSlots()
         {
             DateTime minDateTime = DateTime.Now;
+            DateTime maxDateTime = new DateTime(2021, 5, 15);
 
             List<DateTime> allDates = new List<DateTime>();
             List<TimeSlot> timeSlots = new List<TimeSlot>();
@@ -38,42 +39,37 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     var timeSlot1 = new TimeSlot
                     {
                         IsAvailable = true,
-                        TimeRange = new TimeRange(
-                            new DateTime(date.Year, date.Minute, date.Second, 9, 0, 0),
-                            new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0)
-                        )
+                        Start = new DateTime(date.Year, date.Minute, date.Second, 9, 0, 0),
+                        End = new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0),
+                        Duration = (new DateTime(date.Year, date.Minute, date.Second, 9, 0, 0))-(new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0))
                     };
                     var timeSlot2 = new TimeSlot
                     {
                         IsAvailable = true,
-                        TimeRange = new TimeRange(
-                            new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0),
-                            new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0)
-                        )
+                        Start = new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0),
+                        End = new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0),
+                        Duration = (new DateTime(date.Year, date.Minute, date.Second, 10, 0, 0))-(new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0))
                     };
                     var timeSlot3 = new TimeSlot
                     {
                         IsAvailable = true,
-                        TimeRange = new TimeRange(
-                            new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0),
-                            new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0)
-                        )
+                        Start = new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0),
+                        End = new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0),
+                        Duration = (new DateTime(date.Year, date.Minute, date.Second, 12, 0, 0))-(new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0))
                     };
                     var timeSlot4 = new TimeSlot
                     {
                         IsAvailable = true,
-                        TimeRange = new TimeRange(
-                            new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0),
-                            new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0)
-                        )
+                        Start = new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0),
+                        End = new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0),
+                        Duration = (new DateTime(date.Year, date.Minute, date.Second, 14, 0, 0))-(new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0))
                     };
                     var timeSlot5 = new TimeSlot
                     {
                         IsAvailable = true,
-                        TimeRange = new TimeRange(
-                            new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0),
-                            new DateTime(date.Year, date.Minute, date.Second, 16, 0, 0)
-                        )
+                        Start = new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0),
+                        End = new DateTime(date.Year, date.Minute, date.Second, 16, 0, 0),
+                        Duration = (new DateTime(date.Year, date.Minute, date.Second, 15, 0, 0))-(new DateTime(date.Year, date.Minute, date.Second, 16, 0, 0))
                     };
                     timeSlots.Add(timeSlot1);
                     timeSlots.Add(timeSlot2);
@@ -92,9 +88,9 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     TimeSlotEntity timeSlotEntity = new TimeSlotEntity
                     {
                         Id = timeslot.Id,
-                        AppointmentId = timeslot.Appointment.Id,
                         IsAvailable = timeslot.IsAvailable,
-                        TimeRange = timeslot.TimeRange
+                        Start = timeslot.Start,
+                        Duration = timeslot.Duration
                     };
                     _ctx.TimeSlots.Add(timeSlotEntity);
                     _ctx.SaveChanges();
