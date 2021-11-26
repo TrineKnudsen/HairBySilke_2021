@@ -12,7 +12,5 @@ namespace HBS.HairBySilke_2021.DataAccess.Entities
         public TimeSpan Duration { get; set; }
         
         public bool IsAvailable { get; set; }
-        public int AppointmentId { get; set; }
-        public AppointmentEntity Appointment { get; set; }
     }
 }
