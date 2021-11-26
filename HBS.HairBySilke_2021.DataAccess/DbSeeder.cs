@@ -59,6 +59,7 @@ namespace HBS.HairBySilke_2021.DataAccess
                         new DateTime(2021, 11,27,10,0,0))
                 }
             });
+            _ctx.SaveChanges();
         }
 
         public void SeedProduction()
