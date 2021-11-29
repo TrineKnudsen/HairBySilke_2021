@@ -31,7 +31,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     .Select(t => new TimeSlotDto
                     {
                         Start = t.Start,
-                        Duration = t.Duration
+                        Duration = t.Duration.TotalHours
                     })
                     .ToList();
                 return Ok(new TimeSlotsDto
