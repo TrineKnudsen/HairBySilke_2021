@@ -31,23 +31,28 @@ namespace HBS.HariBySilke_2021.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "HBS.HariBySilke_2021.WebApi", Version = "v1"});
             });
-
-            services.AddDbContext<MainDbContext>(opt =>
-            {
-                opt.UseSqlite("Data Source=main.db");
-            });
-
+                
+            services.AddScoped<ITreatmentsRepository, TreatmentRepository>();
+            services.AddScoped<ITreatmentsService, TreatmentsService>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IBookingService, BookingService>();
-            
-            services.AddCors(opt =>
-                opt.AddPolicy("dev-policy", policy =>
+            services.AddDbContext<MainDbContext>(opt =>
+            {
+                opt.UseSqlite("Data Source =main.db");
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Dev-cors", policy =>
+
                 {
                     policy
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                })); 
+
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +63,14 @@ namespace HBS.HariBySilke_2021.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HBS.HariBySilke_2021.WebApi v1"));
-                app.UseCors("dev-policy");
-                
-                new DbSeeder(ctx).SeedDevelopment();
+
+                app.UseCors("Dev-cors");
+
+                new DbSeeder(ctx).SeedProduction();
             }
             else
             {
-                new DbSeeder(ctx).SeedProduction();
+                new DbSeeder(ctx).SeedDevelopment();
             }
 
             app.UseHttpsRedirection();
