@@ -29,7 +29,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     .Select(t => new TreatmentDto
                     {
                         Price = t.Price,
-                        TreatmentName = t.TreatmentName
+                        TreatmentName = t.TreatmentName,
+                        Duration = t.Duration
                     }).ToList();
                 return Ok(new TreatmentsDto
                 {

@@ -20,7 +20,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 {
                     Id = te.Id,
                     Price = te.Price,
-                    TreatmentName = te.TreatmentName
+                    TreatmentName = te.TreatmentName,
+                    Duration = te.Duration
                 })
                 .ToList();
         }

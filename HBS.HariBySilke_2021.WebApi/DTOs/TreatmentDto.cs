@@ -6,5 +6,6 @@ namespace HBS.HariBySilke_2021.WebApi.DTOs
     {
         public string TreatmentName { get; set; }
         public int Price { get; set; }
+        public int Duration { get; set; }
     }
 }

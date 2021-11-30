@@ -7,5 +7,7 @@ namespace HBS.Domain.IRepositories
     {
         Appointment CreateAppointment(TimeSlot timeSlot, Treatment treatment, Admin admin, Customer customer);
         TimeSlot[] GetAvailableTimeSlots();
+
+        TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration);
     }
 }

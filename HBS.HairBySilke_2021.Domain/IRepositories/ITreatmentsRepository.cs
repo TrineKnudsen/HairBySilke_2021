@@ -8,5 +8,6 @@ namespace HBS.Domain.IRepositories
         List<Treatment> ReadAllTreatments();
 
         Treatment UpdateTreatment(Treatment treatmentToUpdate);
+        
     }
 }

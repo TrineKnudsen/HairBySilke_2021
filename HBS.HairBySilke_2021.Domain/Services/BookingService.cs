@@ -18,5 +18,10 @@ namespace HBS.Domain.Services
         {
             return _repo.GetAvailableTimeSlots();
         }
+
+        public TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration)
+        {
+            return _repo.GetAvailableTimeSlotsByTreatment(duration);
+        }
     }
 }

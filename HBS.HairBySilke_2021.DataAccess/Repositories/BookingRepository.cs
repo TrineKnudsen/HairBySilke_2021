@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
@@ -90,9 +91,15 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     _ctx.TimeSlots.Add(timeSlotEntity);
                     _ctx.SaveChanges();
                 }
-                
             }
             return timeSlots.ToArray();
+        }
+
+        public TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration)
+        {
+            return GetAvailableTimeSlots()
+                .Where(t => t.Duration.TotalMinutes == duration)
+                .ToArray();
         }
     }
 }

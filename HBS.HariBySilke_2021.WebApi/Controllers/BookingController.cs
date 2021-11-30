@@ -32,7 +32,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     {
                         DayOfWeek = t.Start.DayOfWeek.ToString(),
                         Start = t.Start.ToString(),
-                        Duration = t.Duration.TotalHours,
+                        Duration = t.Duration.TotalMinutes,
                         
                     })
                     .ToList();
@@ -45,6 +45,24 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             {
                 return StatusCode(500, e.Message);
             }
+        }
+
+        [HttpGet("{duration:int}")]
+        public ActionResult<TimeSlotsDto> GetAvailableTimeslotsByTreatment(int duration)
+        {
+            var list = _bookingService.GetAvailableTimeSlotsByTreatment(duration)
+            .Select(t => new TimeSlotDto
+            {
+                Duration = t.Duration.TotalMinutes,
+                Start = t.Start.ToString(),
+                DayOfWeek = t.Start.DayOfWeek.ToString()
+                
+            }).ToList();
+            
+            return Ok(new TimeSlotsDto
+            {
+                List = list
+            });
         }
     }
 }

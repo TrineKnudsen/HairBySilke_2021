@@ -3,6 +3,7 @@ using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using Itenso.TimePeriod;
 using HBS.HairBySilke_2021.DataAccess.Entities;
+using HBS.HairBySilke_2021.DataAccess.Repositories;
 
 namespace HBS.HairBySilke_2021.DataAccess
 {
@@ -27,10 +28,10 @@ namespace HBS.HairBySilke_2021.DataAccess
         {
             _ctx.Database.EnsureDeleted();
             _ctx.Database.EnsureCreated();
-            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Dameklip", Price = 325});
-            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Bundfarve", Price = 415});
-            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Helfarve", Price = 500});
-            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Balayage", Price = 875});
+            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Dameklip", Price = 325, Duration = 150});
+            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Bundfarve", Price = 415, Duration = 120});
+            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Helfarve", Price = 500, Duration = 150});
+            _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Balayage", Price = 875, Duration = 50});
             _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Balayage + Bundfarve", Price = 1075});
             _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Toning", Price = 250});
             _ctx.Treatments.Add(new TreatmentEntity {TreatmentName = "Striber - kort hår", Price = 420});
