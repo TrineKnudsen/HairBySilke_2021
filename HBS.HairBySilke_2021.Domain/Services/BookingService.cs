@@ -23,5 +23,10 @@ namespace HBS.Domain.Services
         {
             return _repo.GetAvailableTimeSlotsByTreatment(duration);
         }
+
+        public Appointment BookAppointment(Appointment appointment)
+        {
+            return _repo.CreateAppointment(appointment);
+        }
     }
 }

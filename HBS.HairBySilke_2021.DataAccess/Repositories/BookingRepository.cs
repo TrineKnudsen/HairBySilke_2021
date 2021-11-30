@@ -17,10 +17,6 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         {
             _ctx = ctx;
         }
-        public Appointment CreateAppointment(TimeSlot timeSlot, Treatment treatment, Admin admin, Customer customer)
-        {
-            throw new NotImplementedException();
-        }
 
         public TimeSlot[] GetAvailableTimeSlots()
         {
@@ -100,6 +96,35 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             return GetAvailableTimeSlots()
                 .Where(t => t.Duration.TotalMinutes == duration)
                 .ToArray();
+        }
+        
+        public Appointment CreateAppointment(Appointment appointment)
+        {
+            var entity = new AppointmentEntity
+            {
+                Treatment = new TreatmentEntity
+                {
+                    TreatmentName = appointment.Treatment.TreatmentName,
+                },
+                TimeSlot = new TimeSlotEntity
+                {
+                    Start = appointment.TimeSlot.Start
+                }
+            };
+            _ctx.Appointments.Add(entity);
+            _ctx.SaveChanges();
+            
+            return new Appointment
+            {
+                Treatment = new Treatment
+                {
+                    TreatmentName = entity.Treatment.TreatmentName
+                },
+                TimeSlot = new TimeSlot
+                {
+                    Start = entity.TimeSlot.Start
+                }
+            };
         }
     }
 }

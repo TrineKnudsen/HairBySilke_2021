@@ -5,7 +5,7 @@ namespace HBS.Domain.IRepositories
 {
     public interface IBookingRepository
     {
-        Appointment CreateAppointment(TimeSlot timeSlot, Treatment treatment, Admin admin, Customer customer);
+        Appointment CreateAppointment(Appointment appointment);
         TimeSlot[] GetAvailableTimeSlots();
 
         TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration);

@@ -64,5 +64,18 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 List = list
             });
         }
+
+        [HttpPost]
+        public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointment)
+        {
+            return Created($"https//:localhost/api/booking/{appointment}",_bookingService.BookAppointment(new Appointment
+            {
+                TreatmentName = appointment.TreatmentName,
+                TimeSlot = new TimeSlot
+                {
+                    Start = appointment.StartTime
+                }
+            }));
+        }
     }
 }
