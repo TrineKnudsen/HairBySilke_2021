@@ -8,6 +8,6 @@ namespace HBS.HairBySilke_2021.DataAccess.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public List<AppointmentEntity> Appointments { get; set; }
+        //public List<AppointmentEntity> Appointments { get; set; }
     }
 }

@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HariBySilke_2021.WebApi.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers

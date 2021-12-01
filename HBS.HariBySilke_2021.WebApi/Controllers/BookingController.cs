@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HBS.Domain.Services;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HariBySilke_2021.WebApi.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -22,60 +16,16 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             _bookingService = bookingService;
         }
 
-        [HttpGet]
-        public ActionResult<TimeSlotDto> ReadAll()
-        {
-            try
-            {
-                var timeSlots = _bookingService.GetAvailableTimeSlots()
-                    .Select(t => new TimeSlotDto
-                    {
-                        DayOfWeek = t.Start.DayOfWeek.ToString(),
-                        Start = t.Start.ToString(),
-                        Duration = t.Duration.TotalMinutes,
-                        
-                    })
-                    .ToList();
-                return Ok(new TimeSlotsDto
-                {
-                    List = timeSlots
-                });
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
-        }
-
-        [HttpGet("{duration:int}")]
-        public ActionResult<TimeSlotsDto> GetAvailableTimeslotsByTreatment(int duration)
-        {
-            var list = _bookingService.GetAvailableTimeSlotsByTreatment(duration)
-            .Select(t => new TimeSlotDto
-            {
-                Duration = t.Duration.TotalMinutes,
-                Start = t.Start.ToString(),
-                DayOfWeek = t.Start.DayOfWeek.ToString()
-                
-            }).ToList();
-            
-            return Ok(new TimeSlotsDto
-            {
-                List = list
-            });
-        }
-
         [HttpPost]
         public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointment)
         {
-            return Created($"https//:localhost/api/booking/{appointment}",_bookingService.BookAppointment(new Appointment
+            var appointmentModel = new Appointment
             {
                 TreatmentName = appointment.TreatmentName,
-                TimeSlot = new TimeSlot
-                {
-                    Start = appointment.StartTime
-                }
-            }));
+                Start = appointment.Start
+            };
+            
+            return Ok(_bookingService.BookAppointment(appointmentModel));
         }
     }
 }

@@ -36,6 +36,8 @@ namespace HBS.HariBySilke_2021.WebApi
             services.AddScoped<ITreatmentsService, TreatmentsService>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
+            services.AddScoped<ITimeSlotService, TimeSlotService>();
             services.AddDbContext<MainDbContext>(opt =>
             {
                 opt.UseSqlite("Data Source =main.db");
