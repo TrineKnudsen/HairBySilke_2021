@@ -30,7 +30,13 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     TimeSlot = timeslot,
                     Treatment = treatment,
                     TimeSlotId = timeslot.Id,
-                    TreatmentId = treatment.Id
+                    TreatmentId = treatment.Id,
+                    Customer = new CustomerEntity
+                    {
+                        Email = appointment.Customer.Email,
+                        PhoneNumber = appointment.Customer.PhoneNumber,
+                        Name = appointment.Customer.Name
+                    }
                 };
                 _ctx.Appointments.Add(ae);
                 _ctx.SaveChanges();
@@ -53,7 +59,13 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 .Select(te => new Appointment()
                 {
                     TreatmentName = te.Treatment.TreatmentName,
-                    Start = te.TimeSlot.Start
+                    Start = te.TimeSlot.Start,
+                    Customer = new Customer
+                    {
+                        Name = te.Customer.Name,
+                        PhoneNumber = te.Customer.PhoneNumber,
+                        Email = te.Customer.Email
+                    }
                 })
                 .ToList();
         }

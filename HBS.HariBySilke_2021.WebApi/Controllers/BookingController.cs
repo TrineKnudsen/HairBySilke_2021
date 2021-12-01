@@ -28,9 +28,14 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             var appointmentModel = new Appointment
             {
                 TreatmentName = appointment.TreatmentName,
-                Start = appointment.Start
+                Start = appointment.Start,
+                Customer = new Customer
+                {
+                    Name = appointment.Customer.Name,
+                    Email = appointment.Customer.Email,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                }
             };
-            
             return Created($"https//:localhost/api/booking",_bookingService.BookAppointment(appointmentModel));
         }
         
@@ -43,7 +48,13 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     .Select(t => new AppointmentDto()
                     {
                         TreatmentName = t.TreatmentName,
-                        Start = t.Start
+                        Start = t.Start,
+                        Customer = new CustomerDTO
+                        {
+                            Email = t.Customer.Email,
+                            Name = t.Customer.Name,
+                            PhoneNumber = t.Customer.PhoneNumber
+                        }
                     }).ToList();
                 return Ok(new AppointmentDtos()
                 {
