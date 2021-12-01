@@ -7,5 +7,6 @@ namespace HBS.Domain.IRepositories
     public interface IBookingRepository
     {
         Appointment CreateAppointment(Appointment appointment);
+        List<Appointment> ReadAllApp();
     }
 }

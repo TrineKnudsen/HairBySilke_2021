@@ -19,5 +19,10 @@ namespace HBS.Domain.Services
         {
             return _repo.CreateAppointment(appointment);
         }
+        
+        public List<Appointment> GetAllAppointments()
+        {
+            return _repo.ReadAllApp();
+        }
     }
 }

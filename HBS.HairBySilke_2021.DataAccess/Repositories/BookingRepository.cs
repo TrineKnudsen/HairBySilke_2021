@@ -46,5 +46,16 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             }
             return null;
         }
+        
+        public List<Appointment> ReadAllApp()
+        {
+            return _ctx.Appointments
+                .Select(te => new Appointment()
+                {
+                    TreatmentName = te.Treatment.TreatmentName,
+                    Start = te.TimeSlot.Start
+                })
+                .ToList();
+        }
     }
 }

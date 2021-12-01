@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HariBySilke_2021.WebApi.DTOs;
@@ -30,6 +32,29 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             };
             
             return Created($"https//:localhost/api/booking",_bookingService.BookAppointment(appointmentModel));
+        }
+        
+        [HttpGet]
+        public ActionResult<AppointmentDto> ReadAll()
+        {
+            try
+            {
+                var treatments = _bookingService.GetAllAppointments()
+                    .Select(t => new AppointmentDto()
+                    {
+                        TreatmentName = t.TreatmentName,
+                        Start = t.Start
+                    }).ToList();
+                return Ok(new AppointmentDtos()
+                {
+                    List = treatments
+                });
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
     }
 }
