@@ -42,16 +42,16 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return StatusCode(500, e.StackTrace);
             }
         }
         
         [HttpGet]
-        public ActionResult<AppointmentDto> ReadAll()
+        public ActionResult<AppointmentDto> ReadAll(string dayOfWeek)
         {
             try
             {
-                var treatments = _bookingService.GetAllAppointments()
+                var treatments = _bookingService.GetDailyAppointments(dayOfWeek)
                     .Select(t => new AppointmentDto()
                     {
                         TreatmentName = t.TreatmentName,
@@ -74,5 +74,6 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
     }
 }

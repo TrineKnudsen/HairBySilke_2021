@@ -79,11 +79,14 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             {
                 appList.Add(new Appointment
                 {
-                    TimeSlot = new TimeSlot
+                    TreatmentName = appEntity.Treatment.TreatmentName,
+                    Start = appEntity.TimeSlot.Start,
+                    Customer = new Customer
                     {
-                        Start = appEntity.TimeSlot.Start
-                    },
-                    TreatmentName = appEntity.Treatment.TreatmentName
+                        Name = appEntity.Customer.Name,
+                        PhoneNumber = appEntity.Customer.PhoneNumber,
+                        Email = appEntity.Customer.Email
+                    }
                 });
             }
 
