@@ -21,22 +21,29 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         [HttpPost]
         public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointment)
         {
-            if (appointment == null)
+            try
             {
-                return BadRequest("Something went wrong");
-            }
-            var appointmentModel = new Appointment
-            {
-                TreatmentName = appointment.TreatmentName,
-                Start = appointment.Start,
-                Customer = new Customer
+                if (appointment == null)
                 {
-                    Name = appointment.Customer.Name,
-                    Email = appointment.Customer.Email,
-                    PhoneNumber = appointment.Customer.PhoneNumber
+                    return BadRequest("Tjek om du udfyldt felterne rigtigt.");
                 }
-            };
-            return Created($"https//:localhost/api/booking",_bookingService.BookAppointment(appointmentModel));
+                var appointmentModel = new Appointment
+                {
+                    TreatmentName = appointment.TreatmentName,
+                    Start = appointment.Start,
+                    Customer = new Customer
+                    {
+                        Name = appointment.Customer.Name,
+                        Email = appointment.Customer.Email,
+                        PhoneNumber = appointment.Customer.PhoneNumber
+                    }
+                };
+                return Created($"https//:localhost/api/booking",_bookingService.BookAppointment(appointmentModel));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
         }
         
         [HttpGet]

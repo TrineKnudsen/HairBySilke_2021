@@ -5,29 +5,51 @@ namespace HBS.HairBySilke_2021.Core.Test
 {
     public class TreatmentsTest
     {
+        private Treatment _treatment;
+        public TreatmentsTest()
+        {
+            _treatment = new Treatment();
+        }
+        
+        /*
+         * Testing if the treatment model can be initialized.
+         */
         [Fact]
         public void Treatment_CanBeInitialized()
         {
-            var treatment = new Treatment();
-            Assert.NotNull(treatment);
+            Assert.NotNull(_treatment);
         }
         
+        /*
+         * Tests if we can save an id to treatment and
+         * that it will be stored in the treatment.
+         */
         [Fact]
-        public void Product_SetId_StoresId()
+        public void Treatment_Id_MustBeInt()
         {
-            var treatment = new Treatment();
-            treatment.Id = 1;
-            Assert.Equal(1, treatment.Id);
+            Assert.True(_treatment.Id is int);
+        }
+        
+        /*
+         * Tests if we can save an id to treatment and
+         * that it will be stored in the treatment.
+         */
+        [Fact]
+        public void Treatment_SetId_StoresId()
+        {
+            _treatment.Id = 1;
+            Assert.Equal(1, _treatment.Id);
         }
 
+        /**
+         * Tests if we can set a treatment name to a treatment and that
+         * it will be saved as a string in the treatment.
+         */
         [Fact]
-        public void Product_SetName_StoreNamesString()
+        public void Treatment_SetName_StoreNameAsString()
         {
-            var treatment = new Treatment();
-            treatment.TreatmentName = "Helfarve - langt hår";
-            Assert.Equal("Helfarve - langt hår", treatment.TreatmentName);
+            _treatment.TreatmentName = "Bundfarve";
+            Assert.Equal("Bundfarve", _treatment.TreatmentName);
         }
     }
-    
-    
 }
