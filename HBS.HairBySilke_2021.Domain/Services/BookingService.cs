@@ -19,10 +19,18 @@ namespace HBS.Domain.Services
         {
             return _repo.CreateAppointment(appointment);
         }
-        
+
+
         public List<Appointment> GetAllAppointments()
         {
             return _repo.ReadAllApp();
+        }
+
+
+        public List<Appointment> GetDailyAppointments(string dayOfWeek)
+        {
+            return _repo.GetDailyAppointments(dayOfWeek);
+
         }
     }
 }

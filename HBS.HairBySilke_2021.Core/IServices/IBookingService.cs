@@ -7,6 +7,10 @@ namespace HBS.HairBySilke_2021.Core.IServices
     public interface IBookingService
     {
         Appointment BookAppointment(Appointment appointment);
+
         List<Appointment> GetAllAppointments();
+
+        List<Appointment> GetDailyAppointments(string dayOfWeek);
+
     }
 }

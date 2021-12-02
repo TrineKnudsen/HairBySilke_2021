@@ -21,7 +21,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         public Appointment CreateAppointment(Appointment appointment)
         {
             TimeSlotEntity timeslot = _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
-            TreatmentEntity treatment = _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
+            TreatmentEntity treatment =
+                _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
 
             if (treatment != null && timeslot != null)
             {
@@ -40,7 +41,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 };
                 _ctx.Appointments.Add(ae);
                 _ctx.SaveChanges();
-                
+
                 return new Appointment
                 {
                     Id = ae.Id,
@@ -50,9 +51,11 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     Start = ae.TimeSlot.Start
                 };
             }
+
             return null;
         }
-        
+
+
         public List<Appointment> ReadAllApp()
         {
             return _ctx.Appointments
@@ -68,6 +71,26 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     }
                 })
                 .ToList();
+        }
+
+        public List<Appointment> GetDailyAppointments(string dayOfWeek)
+        {
+            var entityList = _ctx.Appointments.Where(a => a.TimeSlot.Start.DayOfWeek.ToString() == dayOfWeek);
+            var appList = new List<Appointment>();
+
+            foreach (var appEntity in entityList)
+            {
+                appList.Add(new Appointment
+                {
+                    TimeSlot = new TimeSlot
+                    {
+                        Start = appEntity.TimeSlot.Start
+                    },
+                    TreatmentName = appEntity.Treatment.TreatmentName
+                });
+            }
+
+            return appList;
         }
     }
 }
