@@ -10,7 +10,5 @@ namespace HBS.Domain.IRepositories
 
         List<Appointment> ReadAllApp();
 
-        List<Appointment> GetDailyAppointments(string dayOfWeek);
-
     }
 }

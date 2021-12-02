@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
+using Itenso.TimePeriod;
 
 namespace HBS.HairBySilke_2021.DataAccess.Repositories
 {
@@ -17,80 +20,63 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public Appointment CreateAppointment(Appointment appointment)
         {
-            TimeSlotEntity timeslot = _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
-            TreatmentEntity treatment =
-                _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
+            var timeslot =
+                _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
+            var treatment = _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
 
-            if (treatment != null && timeslot != null)
+            if (treatment == null || timeslot == null) return null;
+            var ae = new AppointmentEntity
             {
-                var ae = new AppointmentEntity
+                TimeSlotId = timeslot.Id,
+                TimeSlot = timeslot,
+                Treatment = treatment,
+                TreatmentId = treatment.Id,
+                Customer = new CustomerEntity
                 {
-                    TimeSlot = timeslot,
-                    Treatment = treatment,
-                    TimeSlotId = timeslot.Id,
-                    TreatmentId = treatment.Id,
-                    Customer = new CustomerEntity
-                    {
-                        Email = appointment.Customer.Email,
-                        PhoneNumber = appointment.Customer.PhoneNumber,
-                        Name = appointment.Customer.Name
-                    }
-                };
-                _ctx.Appointments.Add(ae);
-                _ctx.SaveChanges();
+                    Email = appointment.Customer.Email,
+                    PhoneNumber = appointment.Customer.PhoneNumber,
+                    Name = appointment.Customer.Name
+                },
+                CustomerId = appointment.Customer.Id,
+            };
+            _ctx.Appointments.Add(ae);
+            _ctx.SaveChanges();
 
-                return new Appointment
+            return new Appointment
+            {
+                Id = ae.Id,
+                TimeSlotId = ae.TimeSlotId,
+                TreatmentId = ae.TreatmentId,
+                TreatmentName = ae.Treatment.TreatmentName,
+                Start = ae.TimeSlot.Start,
+                Customer = new Customer
                 {
-                    Id = ae.Id,
-                    TimeSlotId = ae.TimeSlotId,
-                    TreatmentId = ae.TreatmentId,
-                    TreatmentName = ae.Treatment.TreatmentName,
-                    Start = ae.TimeSlot.Start
-                };
-            }
-
-            return null;
+                    Email = ae.Customer.Email,
+                    Name = ae.Customer.Name,
+                    PhoneNumber = ae.Customer.PhoneNumber,
+                    Id = ae.CustomerId
+                }
+            };
         }
-
 
         public List<Appointment> ReadAllApp()
-        {
-            return _ctx.Appointments
-                .Select(te => new Appointment()
-                {
-                    TreatmentName = te.Treatment.TreatmentName,
-                    Start = te.TimeSlot.Start,
-                    Customer = new Customer
-                    {
-                        Name = te.Customer.Name,
-                        PhoneNumber = te.Customer.PhoneNumber,
-                        Email = te.Customer.Email
-                    }
-                })
-                .ToList();
-        }
-
-        public List<Appointment> GetDailyAppointments(string dayOfWeek)
-        {
-            var entityList = _ctx.Appointments.Where(a => a.TimeSlot.Start.DayOfWeek.ToString() == dayOfWeek);
-            var appList = new List<Appointment>();
-
-            foreach (var appEntity in entityList)
             {
-                appList.Add(new Appointment
-                {
-                    TreatmentName = appEntity.Treatment.TreatmentName,
-                    Start = appEntity.TimeSlot.Start,
-                    Customer = new Customer
+                return _ctx.Appointments
+                    .Select(pe => new Appointment
                     {
-                        Name = appEntity.Customer.Name,
-                        PhoneNumber = appEntity.Customer.PhoneNumber,
-                        Email = appEntity.Customer.Email
-                    }
-                });
+                        Id = pe.Id,
+                        Customer = new Customer
+                        {
+                            Email = pe.Customer.Email,
+                            Name = pe.Customer.Name,
+                            PhoneNumber = pe.Customer.PhoneNumber,
+                            Id = pe.Id
+                        },
+                        Start = pe.TimeSlot.Start,
+                        TimeSlotId = pe.TimeSlotId,
+                        TreatmentId = pe.TreatmentId,
+                        TreatmentName = pe.Treatment.TreatmentName
+                    }).ToList();
             }
-
-            return appList;
         }
-    }
 }

@@ -8,9 +8,6 @@ namespace HBS.HairBySilke_2021.Core.IServices
     {
         Appointment BookAppointment(Appointment appointment);
 
-        List<Appointment> GetAllAppointments();
-
-        List<Appointment> GetDailyAppointments(string dayOfWeek);
-
+        List<Appointment> GetAllApp();
     }
 }

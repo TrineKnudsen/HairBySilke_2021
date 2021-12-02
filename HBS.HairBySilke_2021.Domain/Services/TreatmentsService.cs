@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -10,9 +9,9 @@ namespace HBS.Domain.Services
     {
         private readonly ITreatmentsRepository _treatmentsRepository;
 
-        public TreatmentsService(ITreatmentsRepository treatmentsRepository)
+        public TreatmentsService(ITreatmentsRepository _treatmentsRepository)
         {
-            _treatmentsRepository = treatmentsRepository ?? throw new InvalidDataException("TreatmentRepository can't be null");
+            this._treatmentsRepository = _treatmentsRepository;
         }
         public Customer CreateCustomer(Customer customer)
         {

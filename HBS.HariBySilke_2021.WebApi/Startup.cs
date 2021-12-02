@@ -40,7 +40,7 @@ namespace HBS.HariBySilke_2021.WebApi
             services.AddScoped<ITimeSlotService, TimeSlotService>();
             services.AddDbContext<MainDbContext>(opt =>
             {
-                opt.UseSqlite("Data Source =main.db");
+                opt.UseSqlite("Data Source=main.db");
             });
             services.AddCors(options =>
             {

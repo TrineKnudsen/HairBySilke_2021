@@ -45,27 +45,19 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         [HttpGet("{duration:int}")]
         public ActionResult<TimeSlotsDto> GetAvailableTimeslotsByTreatment(int duration)
         {
-            try
-            {
-                var list = _timeSlotService.GetAvailableTimeSlotsByTreatment(duration)
-                    .Select(t => new TimeSlotDto
-                    {
-                        Duration = t.Duration.TotalMinutes,
-                        Start = t.Start,
-                        DayOfWeek = t.Start.DayOfWeek.ToString()
-
-                    }).ToList();
-
-                return Ok(new TimeSlotsDto
+            var list = _timeSlotService.GetAvailableTimeSlotsByTreatment(duration)
+                .Select(t => new TimeSlotDto
                 {
-                    List = list
-                });
-            }
-            catch (Exception e)
+                    Duration = t.Duration.TotalMinutes,
+                    Start = t.Start,
+                    DayOfWeek = t.Start.DayOfWeek.ToString()
+
+                }).ToList();
+
+            return Ok(new TimeSlotsDto
             {
-                return StatusCode(500, e.Message);
-            }
-            
+                List = list
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -19,61 +20,62 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointment)
+        public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointmentDto)
         {
-            try
+            var appointment = _bookingService.BookAppointment(new Appointment
             {
-                if (appointment == null)
+                TreatmentName = appointmentDto.TreatmentName,
+                Start = appointmentDto.Start,
+                Customer = new Customer
                 {
-                    return BadRequest("Tjek om du udfyldt felterne rigtigt.");
+                    Name = appointmentDto.Customer.Name,
+                    Email = appointmentDto.Customer.Email,
+                    PhoneNumber = appointmentDto.Customer.PhoneNumber
                 }
-                var appointmentModel = new Appointment
-                {
-                    TreatmentName = appointment.TreatmentName,
-                    Start = appointment.Start,
-                    Customer = new Customer
-                    {
-                        Name = appointment.Customer.Name,
-                        Email = appointment.Customer.Email,
-                        PhoneNumber = appointment.Customer.PhoneNumber
-                    }
-                };
-                return Created($"https//:localhost/api/booking",_bookingService.BookAppointment(appointmentModel));
-            }
-            catch (Exception e)
+            });
+            var appDtoToReturn = new AppointmentDto
             {
-                return StatusCode(500, e.StackTrace);
-            }
+                Start = appointment.Start,
+                TreatmentName = appointment.TreatmentName,
+                Customer = new CustomerDTO
+                {
+                    Email = appointment.Customer.Email,
+                    Name = appointment.Customer.Name,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                }
+            };
+            
+            return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
-        
+
         [HttpGet]
-        public ActionResult<AppointmentDto> ReadAll(string dayOfWeek)
+        public ActionResult<AppointmentDtos> GetAllApp()
         {
             try
             {
-                var treatments = _bookingService.GetDailyAppointments(dayOfWeek)
-                    .Select(t => new AppointmentDto()
+                var apps = _bookingService.GetAllApp()
+                    .Select(p => new AppointmentDto()
                     {
-                        TreatmentName = t.TreatmentName,
-                        Start = t.Start,
+                        Start = p.Start,
+                        TreatmentName = p.TreatmentName,
                         Customer = new CustomerDTO
                         {
-                            Email = t.Customer.Email,
-                            Name = t.Customer.Name,
-                            PhoneNumber = t.Customer.PhoneNumber
+                            Name = p.Customer.Name,
+                            Email = p.Customer.Email,
+                            PhoneNumber = p.Customer.PhoneNumber
                         }
-                    }).ToList();
-                return Ok(new AppointmentDtos()
+                    })
+                    .ToList();
+                
+                return Ok(new AppointmentDtos
                 {
-                    List = treatments
+                    List = apps
                 });
-
             }
             catch (Exception e)
             {
                 return StatusCode(500, e.Message);
             }
         }
-
     }
 }
