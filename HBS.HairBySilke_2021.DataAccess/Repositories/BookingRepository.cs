@@ -6,6 +6,7 @@ using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using Itenso.TimePeriod;
+using Microsoft.EntityFrameworkCore;
 
 namespace HBS.HairBySilke_2021.DataAccess.Repositories
 {
@@ -81,7 +82,11 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public List<Appointment> GetDailyApp(string dayOfWeek)
         {
-            var entityList = _ctx.Appointments.Where(a => a.TimeSlot.Start.DayOfWeek.ToString() == dayOfWeek);
+            var dow = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dayOfWeek); 
+            var entityList = _ctx.Appointments
+                .Include(a => a.Treatment)
+                .Include(a => a.TimeSlot)
+                .Where(a => a.TimeSlot.Start.DayOfWeek == dow);
             var appList = new List<Appointment>();
 
             foreach (var appEntity in entityList)

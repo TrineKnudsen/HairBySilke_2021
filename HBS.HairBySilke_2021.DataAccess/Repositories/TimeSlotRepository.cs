@@ -79,7 +79,16 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     timeSlots.Add(timeSlot5);
                 }
 
-                foreach (var timeslot in timeSlots)
+                var entites = timeSlots.Select(ts => new TimeSlotEntity
+                {
+                    Id = ts.Id,
+                    IsAvailable = ts.IsAvailable,
+                    Start = ts.Start,
+                    Duration = ts.Duration
+                });
+                _ctx.AddRange(entites);
+                _ctx.SaveChanges();
+                /*foreach (var timeslot in timeSlots)
                 {
                     TimeSlotEntity timeSlotEntity = new TimeSlotEntity
                     {
@@ -90,7 +99,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     };
                     _ctx.TimeSlots.Add(timeSlotEntity);
                     _ctx.SaveChanges();
-                }
+                }*/
             }
 
             return timeSlots.ToArray();
