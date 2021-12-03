@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using HBS.Domain.IRepositories;
+using HBS.Domain.Services;
+using HBS.HairBySilke_2021.Core.IServices;
+using HBS.HairBySilke_2021.DataAccess;
+using HBS.HairBySilke_2021.DataAccess.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebSockets;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace HBS.HariBySilke_2021.WebApi
@@ -31,16 +31,46 @@ namespace HBS.HariBySilke_2021.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "HBS.HariBySilke_2021.WebApi", Version = "v1"});
             });
+                
+            services.AddScoped<ITreatmentsRepository, TreatmentRepository>();
+            services.AddScoped<ITreatmentsService, TreatmentsService>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddDbContext<MainDbContext>(opt =>
+            {
+                opt.UseSqlite("Data Source =main.db");
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Dev-cors", policy =>
+
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MainDbContext ctx)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HBS.HariBySilke_2021.WebApi v1"));
+
+                app.UseCors("Dev-cors");
+
+                new DbSeeder(ctx).SeedProduction();
+            }
+            else
+            {
+                new DbSeeder(ctx).SeedDevelopment();
             }
 
             app.UseHttpsRedirection();

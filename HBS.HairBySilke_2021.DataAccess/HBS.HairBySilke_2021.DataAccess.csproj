@@ -5,8 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Entitites" />
-      <Folder Include="Repositories" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+      <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HBS.HairBySilke_2021.Domain\HBS.HairBySilke_2021.Domain.csproj" />
     </ItemGroup>
 
 </Project>
