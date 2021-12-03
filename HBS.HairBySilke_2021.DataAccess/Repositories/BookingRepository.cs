@@ -60,23 +60,40 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         }
 
         public List<Appointment> ReadAllApp()
-            {
-                return _ctx.Appointments
-                    .Select(pe => new Appointment
+        {
+            return _ctx.Appointments
+                .Select(pe => new Appointment
+                {
+                    Id = pe.Id,
+                    Customer = new Customer
                     {
-                        Id = pe.Id,
-                        Customer = new Customer
-                        {
-                            Email = pe.Customer.Email,
-                            Name = pe.Customer.Name,
-                            PhoneNumber = pe.Customer.PhoneNumber,
-                            Id = pe.Id
-                        },
-                        Start = pe.TimeSlot.Start,
-                        TimeSlotId = pe.TimeSlotId,
-                        TreatmentId = pe.TreatmentId,
-                        TreatmentName = pe.Treatment.TreatmentName
-                    }).ToList();
-            }
+                        Email = pe.Customer.Email,
+                        Name = pe.Customer.Name,
+                        PhoneNumber = pe.Customer.PhoneNumber,
+                        Id = pe.Id
+                    },
+                    Start = pe.TimeSlot.Start,
+                    TimeSlotId = pe.TimeSlotId,
+                    TreatmentId = pe.TreatmentId,
+                    TreatmentName = pe.Treatment.TreatmentName
+                }).ToList();
         }
+
+        public List<Appointment> GetDailyApp(string dayOfWeek)
+        {
+            var entityList = _ctx.Appointments.Where(a => a.TimeSlot.Start.DayOfWeek.ToString() == dayOfWeek);
+            var appList = new List<Appointment>();
+
+            foreach (var appEntity in entityList)
+            {
+                appList.Add(new Appointment
+                {
+                    Start = appEntity.TimeSlot.Start,
+                    TreatmentName = appEntity.Treatment.TreatmentName
+                });
+            }
+
+            return appList;
+        }
+    }
 }

@@ -48,7 +48,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
             try
@@ -76,6 +76,22 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             {
                 return StatusCode(500, e.Message);
             }
+        }*/
+
+        [HttpGet]
+        public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
+        {
+            var dailyApp = _bookingService.GetDailyApp(dayOfWeek)
+                    .Select(a => new AppointmentDto
+                    {
+                        Start = a.Start,
+                        TreatmentName = a.TreatmentName
+                    }).ToList();
+            return Ok(new AppointmentDtos
+            {
+                List = dailyApp
+            });
         }
+        
     }
 }

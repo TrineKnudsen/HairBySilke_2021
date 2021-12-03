@@ -24,5 +24,10 @@ namespace HBS.Domain.Services
         {
             return _repo.ReadAllApp();
         }
+
+        public List<Appointment> GetDailyApp(string dayOfWeek)
+        {
+            return _repo.GetDailyApp(dayOfWeek);
+        }
     }
 }
