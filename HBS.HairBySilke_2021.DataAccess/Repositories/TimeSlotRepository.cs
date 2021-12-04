@@ -16,8 +16,22 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         {
             _ctx = ctx;
         }
-        
-        public TimeSlot[] GetAvailableTimeSlots()
+
+        public List<TimeSlot> GetAvailableTimeSlots()
+        {
+            var timeslots = _ctx.TimeSlots
+                .Select(ts => new TimeSlot
+                {
+                    Id = ts.Id,
+                    IsAvailable = ts.IsAvailable,
+                    Start = ts.Start,
+                    Duration = ts.Duration
+                }).ToList();
+
+            return timeslots;
+        }
+
+        /**public TimeSlot[] GetAvailableTimeSlots()
         {
             DateTime minDateTime = new DateTime(2021, 11, 26, 09, 0, 0);
             DateTime maxDateTime = new DateTime(2021, 12, 10, 16, 0, 0);
@@ -99,17 +113,18 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     };
                     _ctx.TimeSlots.Add(timeSlotEntity);
                     _ctx.SaveChanges();
-                }*/
+                }
             }
 
             return timeSlots.ToArray();
-        }
+        }*/
 
-        public TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration)
+        public List<TimeSlot> GetAvailableTimeSlotsByTreatment(double duration)
         {
-            return GetAvailableTimeSlots()
-                .Where(t => t.Duration.TotalMinutes == duration)
-                .ToArray();
+            var timeslots = GetAvailableTimeSlots().Where(ts => Math.Abs(ts.Duration.TotalMinutes - duration) < 0.2)
+                .ToList();
+
+            return timeslots;
         }
     }
 }

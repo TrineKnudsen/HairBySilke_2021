@@ -42,8 +42,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
         }
 
-        [HttpGet("{duration:int}")]
-        public ActionResult<TimeSlotsDto> GetAvailableTimeslotsByTreatment(int duration)
+        [HttpGet("{duration:double}")]
+        public ActionResult<TimeSlotsDto> GetAvailableTimeslotsByTreatment(double duration)
         {
             var list = _timeSlotService.GetAvailableTimeSlotsByTreatment(duration)
                 .Select(t => new TimeSlotDto

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HariBySilke_2021.WebApi.DTOs;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
 {
-    [Route("api/treatments")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TreatmentController : ControllerBase
     {
@@ -14,7 +15,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
 
         public TreatmentController(ITreatmentsService treatmentsService)
         {
-            _treatmentsService = treatmentsService;
+            _treatmentsService = treatmentsService ?? throw new InvalidDataException();
         }
 
         [HttpGet]

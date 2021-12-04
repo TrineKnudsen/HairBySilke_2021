@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -13,12 +14,12 @@ namespace HBS.Domain.Services
             _repo = repo;
         }
         
-        public TimeSlot[] GetAvailableTimeSlots()
+        public List<TimeSlot> GetAvailableTimeSlots()
         {
             return _repo.GetAvailableTimeSlots();
         }
 
-        public TimeSlot[] GetAvailableTimeSlotsByTreatment(int duration)
+        public List<TimeSlot> GetAvailableTimeSlotsByTreatment(double duration)
         {
             return _repo.GetAvailableTimeSlotsByTreatment(duration);
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
@@ -11,7 +12,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public TreatmentRepository(MainDbContext ctx)
         {
-            _ctx = ctx;
+            _ctx = ctx ?? throw new InvalidDataException("Treatment repository must have a DbContext");
         }
         public List<Treatment> ReadAllTreatments()
         {
