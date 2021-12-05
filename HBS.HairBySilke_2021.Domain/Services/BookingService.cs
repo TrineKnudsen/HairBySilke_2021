@@ -29,5 +29,15 @@ namespace HBS.Domain.Services
         {
             return _repo.GetDailyApp(dayOfWeek);
         }
+
+        public Appointment UpdateAppointment(Appointment appointment)
+        {
+            return _repo.UpdateAppointment(appointment);
+        }
+
+        public void DeleteAppointment(int id)
+        {
+            _repo.DeleteAppointment(id);
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
+using HBS.HairBySilke_2021.DataAccess.Entities;
 using HBS.HariBySilke_2021.WebApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,35 +49,35 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
 
-        /*[HttpGet]
-        public ActionResult<AppointmentDtos> GetAllApp()
-        {
-            try
-            {
-                var apps = _bookingService.GetAllApp()
-                    .Select(p => new AppointmentDto()
-                    {
-                        Start = p.Start,
-                        TreatmentName = p.TreatmentName,
-                        Customer = new CustomerDTO
-                        {
-                            Name = p.Customer.Name,
-                            Email = p.Customer.Email,
-                            PhoneNumber = p.Customer.PhoneNumber
-                        }
-                    })
-                    .ToList();
-                
-                return Ok(new AppointmentDtos
-                {
-                    List = apps
-                });
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
-        }*/
+        // [HttpGet]
+        // public ActionResult<AppointmentDtos> GetAllApp()
+        // {
+        //     try
+        //     {
+        //         var apps = _bookingService.GetAllApp()
+        //             .Select(p => new AppointmentDto()
+        //             {
+        //                 Start = p.Start,
+        //                 TreatmentName = p.TreatmentName,
+        //                 Customer = new CustomerDTO
+        //                 {
+        //                     Name = p.Customer.Name,
+        //                     Email = p.Customer.Email,
+        //                     PhoneNumber = p.Customer.PhoneNumber
+        //                 }
+        //             })
+        //             .ToList();
+        //         
+        //         return Ok(new AppointmentDtos
+        //         {
+        //             List = apps
+        //         });
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         return StatusCode(500, e.Message);
+        //     }
+        // }
 
         [HttpGet]
         public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
@@ -92,6 +93,31 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 List = dailyApp
             });
         }
-        
+
+        [HttpPut]
+        public ActionResult<AppointmentEntity> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+        {
+            var appointment = _bookingService.UpdateAppointment(new Appointment
+            {
+                TreatmentName = appointmentDto.TreatmentName,
+                Start = appointmentDto.Start,
+                Customer = new Customer
+                {
+                    Name = appointmentDto.Customer.Name,
+                    Email = appointmentDto.Customer.Email,
+                    PhoneNumber = appointmentDto.Customer.PhoneNumber
+                }
+            });
+            return Ok();
+            //TODO 
+            // skal return det opdaterede object, ikke kun OK()
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteAppointment(int id)
+        {
+            _bookingService.DeleteAppointment(id);
+        }
+
     }
 }

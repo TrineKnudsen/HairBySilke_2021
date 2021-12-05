@@ -9,7 +9,6 @@ namespace HBS.HairBySilke_2021.Core.Models
         public int TreatmentId { get; set; }
         public Customer Customer { get; set; }
         public int TimeSlotId { get; set; }
-
         public DateTime Start { get; set; }
     }
 }
