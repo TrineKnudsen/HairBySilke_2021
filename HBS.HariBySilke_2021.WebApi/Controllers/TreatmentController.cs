@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HariBySilke_2021.WebApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -18,6 +19,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             _treatmentsService = treatmentsService ?? throw new InvalidDataException();
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<TreatmentDto> ReadAll()
         {
