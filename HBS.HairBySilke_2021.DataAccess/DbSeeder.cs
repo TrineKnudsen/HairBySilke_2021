@@ -34,8 +34,12 @@ namespace HBS.HairBySilke_2021.DataAccess
 
         public void SeedProduction()
         {
-            _ctx.Database.EnsureDeleted();
             _ctx.Database.EnsureCreated();
+
+            if (_ctx.Treatments.Count() > 0)
+            {
+                return;
+            }
             
             var treatments = GetTreatments();
             _ctx.Treatments.AddRange(treatments);
