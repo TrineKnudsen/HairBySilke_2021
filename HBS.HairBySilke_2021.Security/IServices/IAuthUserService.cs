@@ -4,7 +4,7 @@ namespace HBS.HairBySilke_2021.Security.IServices
 {
     public interface IAuthUserService
     {
-        AuthUser Login(string username, string password);
-        
+        AuthUser GetUser(string username);
+
     }
 }

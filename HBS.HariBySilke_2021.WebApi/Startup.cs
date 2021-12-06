@@ -91,11 +91,13 @@ namespace HBS.HariBySilke_2021.WebApi
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
             services.AddScoped<ITimeSlotService, TimeSlotService>();
+            services.AddScoped<IMainDbSeeder, DbSeeder>();
             
             services.AddScoped<IAuthUserRepository, AuthUserRepository>();
             services.AddScoped<IAuthUserService, AuthUserService>();
             services.AddScoped<ISecurityService, SecurityService>();
-
+            services.AddScoped<IAuthDbSeeder, AuthDbSeeder>();
+            
             services.AddDbContext<MainDbContext>(opt =>
             {
                 opt.UseSqlite("Data Source=main.db");
@@ -125,8 +127,8 @@ namespace HBS.HariBySilke_2021.WebApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            MainDbContext ctx,
-            AuthDbContext authCtx)
+            IMainDbSeeder mainCtx,
+            IAuthDbSeeder authCtx)
         {
             if (env.IsDevelopment())
             {
@@ -136,12 +138,13 @@ namespace HBS.HariBySilke_2021.WebApi
 
                 app.UseCors("Dev-cors");
                 
-                new DbSeeder(ctx).SeedDevelopment();
-                new AuthDbSeeder(authCtx).SeedDevelopment();
+                mainCtx.SeedDevelopment();
+                authCtx.SeedDevelopment();
             }
             else
             {
-                new DbSeeder(ctx).SeedProduction();
+                app.UseCors("Prod-cord");
+                mainCtx.SeedProduction();
             }
 
             app.UseHttpsRedirection();

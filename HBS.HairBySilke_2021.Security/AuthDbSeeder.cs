@@ -1,14 +1,19 @@
+using System.Text;
 using HBS.HairBySilke_2021.Security.Entities;
+using HBS.HairBySilke_2021.Security.IServices;
 
 namespace HBS.HairBySilke_2021.Security
 {
-    public class AuthDbSeeder
+    public class AuthDbSeeder: IAuthDbSeeder
     {
         private readonly AuthDbContext _ctx;
+        private readonly ISecurityService _securityService;
 
-        public AuthDbSeeder(AuthDbContext ctx)
+        public AuthDbSeeder(AuthDbContext ctx,
+                            ISecurityService securityService)
         {
             _ctx = ctx;
+            _securityService = securityService;
         }
         
         public void SeedDevelopment()
@@ -16,10 +21,14 @@ namespace HBS.HairBySilke_2021.Security
             _ctx.Database.EnsureDeleted();
             _ctx.Database.EnsureCreated();
 
+            var salt = "123#!";
+
             _ctx.AuthUsers.Add(new AuthUserEntity
             {
+                Salt = salt,
                 Username = "Silke",
-                HashedPassword = "123456",
+                HashedPassword = _securityService.HashedPassword(
+                    "123456", Encoding.ASCII.GetBytes(salt)),
             });
             _ctx.SaveChanges();
         }
