@@ -36,9 +36,11 @@ namespace HBS.HariBySilke_2021.WebApi
             services.AddScoped<ITreatmentsService, TreatmentsService>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
+            services.AddScoped<ITimeSlotService, TimeSlotService>();
             services.AddDbContext<MainDbContext>(opt =>
             {
-                opt.UseSqlite("Data Source =main.db");
+                opt.UseSqlite("Data Source=main.db");
             });
             services.AddCors(options =>
             {
@@ -65,12 +67,12 @@ namespace HBS.HariBySilke_2021.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HBS.HariBySilke_2021.WebApi v1"));
 
                 app.UseCors("Dev-cors");
-
-                new DbSeeder(ctx).SeedProduction();
+                
+                new DbSeeder(ctx).SeedDevelopment();
             }
             else
             {
-                new DbSeeder(ctx).SeedDevelopment();
+                new DbSeeder(ctx).SeedProduction();
             }
 
             app.UseHttpsRedirection();

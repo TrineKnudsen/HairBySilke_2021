@@ -8,6 +8,6 @@ namespace HBS.HairBySilke_2021.Core.Models
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public Appointment Appointment { get; set; }
+        public List<Appointment> Appointment { get; set; }
     }
 }

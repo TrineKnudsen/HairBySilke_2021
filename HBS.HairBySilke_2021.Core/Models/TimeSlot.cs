@@ -1,5 +1,4 @@
 using System;
-using Itenso.TimePeriod;
 
 namespace HBS.HairBySilke_2021.Core.Models
 {
@@ -12,6 +11,6 @@ namespace HBS.HairBySilke_2021.Core.Models
         
         public bool IsAvailable { get; set; }
 
-        public Appointment Appointment { get; set; }
+        public int AppointmentId { get; set; }
     }
 }

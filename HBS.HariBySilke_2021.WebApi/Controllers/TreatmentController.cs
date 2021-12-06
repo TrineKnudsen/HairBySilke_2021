@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HariBySilke_2021.WebApi.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
 {
-    [Route("api/treatments")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TreatmentController : ControllerBase
     {
@@ -17,7 +15,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
 
         public TreatmentController(ITreatmentsService treatmentsService)
         {
-            _treatmentsService = treatmentsService;
+            _treatmentsService = treatmentsService ?? throw new InvalidDataException();
         }
 
         [HttpGet]
@@ -29,7 +27,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     .Select(t => new TreatmentDto
                     {
                         Price = t.Price,
-                        TreatmentName = t.TreatmentName
+                        TreatmentName = t.TreatmentName,
+                        Duration = t.Duration
                     }).ToList();
                 return Ok(new TreatmentsDto
                 {

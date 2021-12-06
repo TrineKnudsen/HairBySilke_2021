@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using Itenso.TimePeriod;
+using Microsoft.EntityFrameworkCore;
 
 namespace HBS.HairBySilke_2021.DataAccess.Repositories
 {
@@ -16,83 +18,87 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         {
             _ctx = ctx;
         }
-        public Appointment CreateAppointment(TimeSlot timeSlot, Treatment treatment, Admin admin, Customer customer)
+
+        public Appointment CreateAppointment(Appointment appointment)
         {
-            throw new NotImplementedException();
+            var timeslot =
+                _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
+            var treatment = _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
+
+            if (treatment == null || timeslot == null) return null;
+            var ae = new AppointmentEntity
+            {
+                TimeSlotId = timeslot.Id,
+                TimeSlot = timeslot,
+                Treatment = treatment,
+                TreatmentId = treatment.Id,
+                Customer = new CustomerEntity
+                {
+                    Email = appointment.Customer.Email,
+                    PhoneNumber = appointment.Customer.PhoneNumber,
+                    Name = appointment.Customer.Name
+                },
+                CustomerId = appointment.Customer.Id,
+            };
+            _ctx.Appointments.Add(ae);
+            _ctx.SaveChanges();
+
+            return new Appointment
+            {
+                Id = ae.Id,
+                TimeSlotId = ae.TimeSlotId,
+                TreatmentId = ae.TreatmentId,
+                TreatmentName = ae.Treatment.TreatmentName,
+                Start = ae.TimeSlot.Start,
+                Customer = new Customer
+                {
+                    Email = ae.Customer.Email,
+                    Name = ae.Customer.Name,
+                    PhoneNumber = ae.Customer.PhoneNumber,
+                    Id = ae.CustomerId
+                }
+            };
         }
 
-        public TimeSlot[] GetAvailableTimeSlots()
+        public List<Appointment> ReadAllApp()
         {
-            DateTime minDateTime = new DateTime(2021, 11, 26, 09, 0,0);
-            DateTime maxDateTime = new DateTime(2021, 12, 10, 16,0,0);
+            return _ctx.Appointments
+                .Select(pe => new Appointment
+                {
+                    Id = pe.Id,
+                    Customer = new Customer
+                    {
+                        Email = pe.Customer.Email,
+                        Name = pe.Customer.Name,
+                        PhoneNumber = pe.Customer.PhoneNumber,
+                        Id = pe.Id
+                    },
+                    Start = pe.TimeSlot.Start,
+                    TimeSlotId = pe.TimeSlotId,
+                    TreatmentId = pe.TreatmentId,
+                    TreatmentName = pe.Treatment.TreatmentName
+                }).ToList();
+        }
 
-            List<DateTime> allDates = new List<DateTime>();
-            List<TimeSlot> timeSlots = new List<TimeSlot>();
+        public List<Appointment> GetDailyApp(string dayOfWeek)
+        {
+            var dow = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dayOfWeek); 
+            var entityList = _ctx.Appointments
+                .Include(a => a.Treatment)
+                .Include(a => a.TimeSlot)
+                .Where(a => a.TimeSlot.Start.DayOfWeek == dow);
+            var appList = new List<Appointment>();
 
-            for (DateTime date = minDateTime; date <= maxDateTime; date = date.AddDays(1))
-                allDates.Add(date);
-            foreach (var date in allDates)
+            foreach (var appEntity in entityList)
             {
-                if (date.DayOfWeek is DayOfWeek.Tuesday or DayOfWeek.Wednesday or DayOfWeek.Thursday or DayOfWeek
-                    .Friday)
+                appList.Add(new Appointment
                 {
-                    var timeSlot1 = new TimeSlot
-                    {
-                        IsAvailable = true,
-                        Start = new DateTime(date.Year, date.Month, date.Day, 9, 0, 0),
-                        End = new DateTime(date.Year, date.Month, date.Day, 10, 0, 0),
-                        Duration = (new DateTime(date.Year, date.Month, date.Day, 10, 0, 0))-(new DateTime(date.Year, date.Month, date.Day, 9, 0, 0))
-                    };
-                    var timeSlot2 = new TimeSlot
-                    {
-                        IsAvailable = true,
-                        Start = new DateTime(date.Year, date.Month, date.Day, 10, 0, 0),
-                        End = new DateTime(date.Year, date.Month, date.Day, 12, 0, 0),
-                        Duration = (new DateTime(date.Year, date.Month, date.Day, 12, 0, 0))-(new DateTime(date.Year, date.Month, date.Day, 10, 0, 0))
-                    };
-                    var timeSlot3 = new TimeSlot
-                    {
-                        IsAvailable = true,
-                        Start = new DateTime(date.Year, date.Month, date.Day, 12, 0, 0),
-                        End = new DateTime(date.Year, date.Month, date.Day, 14, 0, 0),
-                        Duration = (new DateTime(date.Year, date.Month, date.Day, 14, 0, 0))-(new DateTime(date.Year, date.Month, date.Day, 12, 0, 0))
-                    };
-                    var timeSlot4 = new TimeSlot
-                    {
-                        IsAvailable = true,
-                        Start = new DateTime(date.Year, date.Month, date.Day, 14, 0, 0),
-                        End = new DateTime(date.Year, date.Month, date.Day, 15, 0, 0),
-                        Duration = (new DateTime(date.Year, date.Month, date.Day, 15, 0, 0))-(new DateTime(date.Year, date.Month, date.Day, 14, 0, 0))
-                    };
-                    var timeSlot5 = new TimeSlot
-                    {
-                        IsAvailable = true,
-                        Start = new DateTime(date.Year, date.Month, date.Day, 15, 0, 0),
-                        End = new DateTime(date.Year, date.Month, date.Day, 16, 0, 0),
-                        Duration = (new DateTime(date.Year, date.Month, date.Day, 16, 0, 0))-(new DateTime(date.Year, date.Month, date.Day, 15, 0, 0))
-                    };
-                    timeSlots.Add(timeSlot1);
-                    timeSlots.Add(timeSlot2);
-                    timeSlots.Add(timeSlot3);
-                    timeSlots.Add(timeSlot4);
-                    timeSlots.Add(timeSlot5);
-                }
-
-                foreach (var timeslot in timeSlots)
-                {
-                    TimeSlotEntity timeSlotEntity = new TimeSlotEntity
-                    {
-                        Id = timeslot.Id,
-                        IsAvailable = timeslot.IsAvailable,
-                        Start = timeslot.Start,
-                        Duration = timeslot.Duration
-                    };
-                    _ctx.TimeSlots.Add(timeSlotEntity);
-                    _ctx.SaveChanges();
-                }
-                
+                    Start = appEntity.TimeSlot.Start,
+                    TreatmentName = appEntity.Treatment.TreatmentName
+                });
             }
-            return timeSlots.ToArray();
+
+            return appList;
         }
     }
 }

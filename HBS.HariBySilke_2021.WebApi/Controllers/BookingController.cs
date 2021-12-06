@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using HBS.Domain.Services;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HariBySilke_2021.WebApi.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -22,23 +19,57 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             _bookingService = bookingService;
         }
 
+        [HttpPost]
+        public ActionResult<AppointmentDto> CreateAppointment([FromBody] AppointmentDto appointmentDto)
+        {
+            var appointment = _bookingService.BookAppointment(new Appointment
+            {
+                TreatmentName = appointmentDto.TreatmentName,
+                Start = appointmentDto.Start,
+                Customer = new Customer
+                {
+                    Name = appointmentDto.Customer.Name,
+                    Email = appointmentDto.Customer.Email,
+                    PhoneNumber = appointmentDto.Customer.PhoneNumber
+                }
+            });
+            var appDtoToReturn = new AppointmentDto
+            {
+                Start = appointment.Start,
+                TreatmentName = appointment.TreatmentName,
+                Customer = new CustomerDTO
+                {
+                    Email = appointment.Customer.Email,
+                    Name = appointment.Customer.Name,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                }
+            };
+            
+            return Created($"https//:localhost/api/booking",appDtoToReturn);
+        }
+
         [HttpGet]
-        public ActionResult<TimeSlotDto> ReadAll()
+        public ActionResult<AppointmentDtos> GetAllApp()
         {
             try
             {
-                var timeSlots = _bookingService.GetAvailableTimeSlots()
-                    .Select(t => new TimeSlotDto
+                var apps = _bookingService.GetAllApp()
+                    .Select(p => new AppointmentDto()
                     {
-                        DayOfWeek = t.Start.DayOfWeek.ToString(),
-                        Start = t.Start.ToString(),
-                        Duration = t.Duration.TotalHours,
-                        
+                        Start = p.Start,
+                        TreatmentName = p.TreatmentName,
+                        Customer = new CustomerDTO
+                        {
+                            Name = p.Customer.Name,
+                            Email = p.Customer.Email,
+                            PhoneNumber = p.Customer.PhoneNumber
+                        }
                     })
                     .ToList();
-                return Ok(new TimeSlotsDto
+                
+                return Ok(new AppointmentDtos
                 {
-                    List = timeSlots
+                    List = apps
                 });
             }
             catch (Exception e)
@@ -46,5 +77,21 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
+        /*[HttpGet("{dayOfWeek}")]
+        public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
+        {
+            var dailyApp = _bookingService.GetDailyApp(dayOfWeek)
+                    .Select(a => new AppointmentDto
+                    {
+                        Start = a.Start,
+                        TreatmentName = a.TreatmentName
+                    }).ToList();
+            return Ok(new AppointmentDtos
+            {
+                List = dailyApp
+            });
+        }*/
+        
     }
 }

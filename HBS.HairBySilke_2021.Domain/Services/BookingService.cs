@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -13,10 +14,20 @@ namespace HBS.Domain.Services
         {
             _repo = repo;
         }
-        
-        public TimeSlot[] GetAvailableTimeSlots()
+
+        public Appointment BookAppointment(Appointment appointment)
         {
-            return _repo.GetAvailableTimeSlots();
+            return _repo.CreateAppointment(appointment);
+        }
+
+        public List<Appointment> GetAllApp()
+        {
+            return _repo.ReadAllApp();
+        }
+
+        public List<Appointment> GetDailyApp(string dayOfWeek)
+        {
+            return _repo.GetDailyApp(dayOfWeek);
         }
     }
 }
