@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'HairBySilke2021'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D9D5F7F3F4724626A1F09001E51A8469 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FF8135BCFD447088C2EC8A20CC0FC2B }}
           package: .
