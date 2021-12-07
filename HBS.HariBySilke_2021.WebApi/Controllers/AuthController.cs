@@ -1,3 +1,5 @@
+using System;
+using System.Security.Authentication;
 using HBS.HairBySilke_2021.Security.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +21,25 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         [HttpPost(nameof(Login))]
         public ActionResult<TokenDto> Login(LoginDto dto)
         {
-            var token = _securityService.GenerateJwtToken(dto.Username, dto.Password);
-            return new TokenDto
+            try
             {
-                Jwt = token.Jwt,
-                Message = token.Message
-            };
+                var token = _securityService.GenerateJwtToken(dto.Username, dto.Password);
+                return Ok(new TokenDto
+                {
+                    Jwt = token.Jwt,
+                    Message = token.Message
+                });
+            }
+            
+            catch (AuthenticationException ae)
+            {
+                return Unauthorized(ae.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Kontakt adminstrator.");
+            }
         }
-        
     }
 
     public class TokenDto

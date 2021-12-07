@@ -18,8 +18,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         {
             _treatmentsService = treatmentsService ?? throw new InvalidDataException();
         }
-
-        [Authorize]
+        
         [HttpGet]
         public ActionResult<TreatmentDto> ReadAll()
         {

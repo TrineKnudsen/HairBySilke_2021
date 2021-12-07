@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
 using HBS.HairBySilke_2021.Security.IServices;
@@ -45,10 +46,7 @@ namespace HBS.HairBySilke_2021.Security.Services
                 };
             }
 
-            return new JwtToken
-            {
-                Message = "User or password not correct"
-            };
+            throw new AuthenticationException("Brugernavn eller kode er forkert.");
         }
 
         private bool Authenticate(string plainTextPassword, AuthUser user)

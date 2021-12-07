@@ -4,6 +4,7 @@ using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HariBySilke_2021.WebApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -48,6 +49,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
