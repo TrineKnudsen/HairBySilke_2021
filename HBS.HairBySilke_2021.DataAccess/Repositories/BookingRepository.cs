@@ -21,15 +21,24 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public Appointment CreateAppointment(Appointment appointment)
         {
-            var timeslot =
-                _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
-            var treatment = _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
+            var timeslot = _ctx.TimeSlots
+                .FirstOrDefault(ts => ts.Start == appointment.Start);
+            var treatment = _ctx.Treatments
+                .FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
 
             if (treatment == null || timeslot == null) return null;
             var ae = new AppointmentEntity
             {
                 TimeSlotId = timeslot.Id,
-                TimeSlot = timeslot,
+                TimeSlot = new TimeSlotEntity
+                {
+                    Id = timeslot.Id,
+                    DayOfWeek = timeslot.DayOfWeek,
+                    Duration = timeslot.Duration,
+                    End = timeslot.End,
+                    Start = timeslot.Start,
+                    IsAvailable = false
+                },
                 Treatment = treatment,
                 TreatmentId = treatment.Id,
                 Customer = new CustomerEntity
@@ -40,6 +49,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 },
                 CustomerId = appointment.Customer.Id,
             };
+            _ctx.TimeSlots.Remove(timeslot);
             _ctx.Appointments.Add(ae);
             _ctx.SaveChanges();
 
