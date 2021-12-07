@@ -75,12 +75,12 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
-            return x.Id == y.Id && x.TreatmentName == y.TreatmentName && x.Price == y.Price && x.AppointmentId == y.AppointmentId && x.Duration == y.Duration;
+            return x.Id == y.Id && x.TreatmentName == y.TreatmentName && x.Price == y.Price && x.Id == y.Id && x.Duration == y.Duration;
         }
 
         public int GetHashCode(Treatment obj)
         {
-            return HashCode.Combine(obj.Id, obj.TreatmentName, obj.Price, obj.AppointmentId, obj.Duration);
+            return HashCode.Combine(obj.Id, obj.TreatmentName, obj.Price, obj.Id, obj.Duration);
         }
     }
 }
