@@ -50,9 +50,10 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 CustomerId = appointment.Customer.Id,
             };
             _ctx.TimeSlots.Remove(timeslot);
+            _ctx.SaveChanges();
             _ctx.Appointments.Add(ae);
             _ctx.SaveChanges();
-
+            
             return new Appointment
             {
                 Id = ae.Id,
@@ -129,8 +130,23 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public void DeleteAppointment(int id)
         {
-            AppointmentEntity appointmentEntity = _ctx.Appointments.FirstOrDefault(a => a.Id == id);
+            var appointmentEntity = _ctx.Appointments
+                .Include(a => a.TimeSlot)
+                .FirstOrDefault(a => a.Id == id);
+
+            var timeslot = new TimeSlotEntity
+            {
+                Id = appointmentEntity.TimeSlot.Id,
+                DayOfWeek = appointmentEntity.TimeSlot.DayOfWeek,
+                Duration = appointmentEntity.TimeSlot.Duration,
+                End = appointmentEntity.TimeSlot.End,
+                IsAvailable = true,
+                Start = appointmentEntity.TimeSlot.Start
+            };
             _ctx.Appointments.Remove(appointmentEntity);
+            _ctx.TimeSlots.Remove(appointmentEntity.TimeSlot);
+            _ctx.SaveChanges();
+            _ctx.TimeSlots.Add(timeslot);
             _ctx.SaveChanges();
         }
     }
