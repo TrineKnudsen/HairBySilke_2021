@@ -98,6 +98,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 .Include(a => a.Treatment)
                 .Include(a => a.TimeSlot)
                 .Where(a => a.TimeSlot.Start.DayOfWeek == dow);
+            
+            
             var appList = new List<Appointment>();
 
             foreach (var appEntity in entityList)
@@ -108,24 +110,14 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     TreatmentName = appEntity.Treatment.TreatmentName
                 });
             }
-
             return appList;
         }
 
-        public Appointment UpdateAppointment(Appointment appointment)
+        public Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment newAppointment)
         {
-            CustomerEntity customerEntity = _ctx.Customers.FirstOrDefault(c => c.Id == appointment.Customer.Id);
-            var ae = new AppointmentEntity
-            {
-                Customer = customerEntity,
-                CustomerId = appointment.Customer.Id,
-                Id = appointment.Id,
-                TimeSlotId = appointment.TimeSlotId,
-                TreatmentId = appointment.TreatmentId
-            };
-            _ctx.SaveChanges();
-            
-            return appointment;
+            DeleteAppointment(appointmentIdToUpdate);
+
+            return CreateAppointment(newAppointment);
         }
 
         public void DeleteAppointment(int id)
@@ -143,6 +135,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 IsAvailable = true,
                 Start = appointmentEntity.TimeSlot.Start
             };
+            
             _ctx.Appointments.Remove(appointmentEntity);
             _ctx.TimeSlots.Remove(appointmentEntity.TimeSlot);
             _ctx.SaveChanges();

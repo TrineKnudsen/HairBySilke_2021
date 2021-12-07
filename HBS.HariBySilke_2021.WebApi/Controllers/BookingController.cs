@@ -126,10 +126,10 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         // }
         
 
-        [HttpPut]
-        public ActionResult<AppointmentEntity> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+        [HttpPut("{appointmentIdToUpdate}")]
+        public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
         {
-            var appointment = _bookingService.UpdateAppointment(new Appointment
+            var appointment = _bookingService.UpdateAppointment(appointmentIdToUpdate, new Appointment
             {
                 TreatmentName = appointmentDto.TreatmentName,
                 Start = appointmentDto.Start,
@@ -138,11 +138,22 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                     Name = appointmentDto.Customer.Name,
                     Email = appointmentDto.Customer.Email,
                     PhoneNumber = appointmentDto.Customer.PhoneNumber
-                }
+                },
+                Id = appointmentIdToUpdate
             });
-            return Ok();
-            //TODO 
-            // skal return det opdaterede object, ikke kun OK()
+
+            var newAppointmentDto = new AppointmentDto
+            {
+                TreatmentName = appointment.TreatmentName,
+                Start = appointment.Start,
+                Customer = new CustomerDTO
+                {
+                    Name = appointment.Customer.Name,
+                    Email = appointment.Customer.Email,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                }
+            };
+            return Ok(newAppointmentDto);
         }
 
         [HttpDelete("{id}")]
