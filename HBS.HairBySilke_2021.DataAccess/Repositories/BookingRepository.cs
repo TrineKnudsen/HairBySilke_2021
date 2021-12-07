@@ -100,5 +100,28 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
             return appList;
         }
+
+        public Appointment UpdateAppointment(Appointment appointment)
+        {
+            CustomerEntity customerEntity = _ctx.Customers.FirstOrDefault(c => c.Id == appointment.Customer.Id);
+            var ae = new AppointmentEntity
+            {
+                Customer = customerEntity,
+                CustomerId = appointment.Customer.Id,
+                Id = appointment.Id,
+                TimeSlotId = appointment.TimeSlotId,
+                TreatmentId = appointment.TreatmentId
+            };
+            _ctx.SaveChanges();
+            
+            return appointment;
+        }
+
+        public void DeleteAppointment(int id)
+        {
+            AppointmentEntity appointmentEntity = _ctx.Appointments.FirstOrDefault(a => a.Id == id);
+            _ctx.Appointments.Remove(appointmentEntity);
+            _ctx.SaveChanges();
+        }
     }
 }
