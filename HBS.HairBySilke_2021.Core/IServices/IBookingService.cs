@@ -13,5 +13,7 @@ namespace HBS.HairBySilke_2021.Core.IServices
         List<Appointment> GetDailyApp(string dayOfWeek);
         Appointment UpdateAppointment(Appointment appointment);
         void DeleteAppointment(int id);
+
+        Appointment GetAppointment(int id);
     }
 }

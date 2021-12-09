@@ -79,6 +79,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         //     }
         // }
 
+
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
@@ -87,6 +88,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 var apps = _bookingService.GetAllApp()
                     .Select(p => new AppointmentDto()
                     {
+                        Id = p.Id,
                         Start = p.Start,
                         TreatmentName = p.TreatmentName,
                         Customer = new CustomerDTO
@@ -109,6 +111,24 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<AppointmentDto> GetAppointment(int id)
+        {
+            var appointment = _bookingService.GetAppointment(id);
+            var appDto = new AppointmentDto
+            {
+                Customer = new CustomerDTO
+                {
+                    Email = appointment.Customer.Email,
+                    Name = appointment.Customer.Name,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                },
+                Id = appointment.Id,
+                Start = appointment.Start,
+                TreatmentName = appointment.TreatmentName
+            };
+            return Ok(appDto);
+        }
 
         // [HttpGet("{dayOfWeek}")]
         // public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
@@ -125,9 +145,26 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         //     });
         // }
         
-
+/*
         [HttpPut]
-        public ActionResult<AppointmentEntity> UpdateAppointment([FromBody] AppointmentDto appointmentDto)
+        public ActionResult<AppointmentEntity> UpdateAppointment([FromBody] Appointment appointment)
+        {
+            var appointmentDto = new AppointmentDto
+            {
+                Id = appointment.Id,
+                Start = appointment.Start,
+                TreatmentName = appointment.TreatmentName,
+                Customer = new CustomerDTO
+                {
+                    Name = appointment.Customer.Name,
+                    Email = appointment.Customer.Email,
+                    PhoneNumber = appointment.Customer.PhoneNumber
+                }
+            };
+            return Ok(appointmentDto);
+        }
+        /*[HttpGet("{dayOfWeek}")]
+        public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
         {
             var appointment = _bookingService.UpdateAppointment(new Appointment
             {
@@ -149,8 +186,6 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         public void DeleteAppointment(int id)
         {
             _bookingService.DeleteAppointment(id);
-        }
-
-
+        }*/
     }
 }

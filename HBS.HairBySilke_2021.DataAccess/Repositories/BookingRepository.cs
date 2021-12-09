@@ -43,7 +43,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             _ctx.Appointments.Add(ae);
             _ctx.SaveChanges();
 
-            return new Appointment
+            var app = new Appointment
             {
                 Id = ae.Id,
                 TimeSlotId = ae.TimeSlotId,
@@ -58,6 +58,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     Id = ae.CustomerId
                 }
             };
+            return app;
         }
 
         public List<Appointment> ReadAllApp()
@@ -122,6 +123,32 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             AppointmentEntity appointmentEntity = _ctx.Appointments.FirstOrDefault(a => a.Id == id);
             _ctx.Appointments.Remove(appointmentEntity);
             _ctx.SaveChanges();
+        }
+
+        public Appointment GetAppointment(int id)
+        {
+            var appointmentEntity = _ctx.Appointments
+                .Include(a => a.TimeSlot)
+                .Include(a => a.Customer)
+                .Include(a => a.Treatment)
+                .FirstOrDefault(a => a.Id == id);
+
+            var appointment = new Appointment
+            {
+                Id = appointmentEntity.Id,
+                Start = appointmentEntity.TimeSlot.Start,
+                TimeSlotId = appointmentEntity.TimeSlot.Id,
+                TreatmentId = appointmentEntity.Treatment.Id,
+                TreatmentName = appointmentEntity.Treatment.TreatmentName,
+                Customer = new Customer
+                {
+                    Email = appointmentEntity.Customer.Email,
+                    Id = appointmentEntity.Customer.Id,
+                    Name = appointmentEntity.Customer.Name,
+                    PhoneNumber = appointmentEntity.Customer.PhoneNumber
+                }
+            };
+            return appointment;
         }
     }
 }

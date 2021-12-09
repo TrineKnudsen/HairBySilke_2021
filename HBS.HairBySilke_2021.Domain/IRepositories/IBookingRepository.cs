@@ -14,5 +14,7 @@ namespace HBS.Domain.IRepositories
         Appointment UpdateAppointment(Appointment appointment);
         void DeleteAppointment(int id);
 
+        Appointment GetAppointment(int id);
+
     }
 }
