@@ -36,6 +36,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             });
             var appDtoToReturn = new AppointmentDto
             {
+                Id = appointment.Id,
                 Start = appointment.Start,
                 TreatmentName = appointment.TreatmentName,
                 Customer = new CustomerDTO
@@ -49,36 +50,6 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
         
-        // [HttpGet]
-        // public List<AppointmentDtos> GetAllApp()
-        // {
-        //     try
-        //     {
-        //         var apps = _bookingService.GetAllApp()
-        //             .Select(p => new AppointmentDto()
-        //             {
-        //                 Start = p.Start,
-        //                 TreatmentName = p.TreatmentName,
-        //                 Customer = new CustomerDTO
-        //                 {
-        //                     Name = p.Customer.Name,
-        //                     Email = p.Customer.Email,
-        //                     PhoneNumber = p.Customer.PhoneNumber
-        //                 }
-        //             })
-        //             .ToList();
-        //         
-        //         return Ok(new AppointmentDtos
-        //         {
-        //             List = apps
-        //         });
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         return StatusCode(500, e.Message);
-        //     }
-        // }
-
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
@@ -87,6 +58,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 var apps = _bookingService.GetAllApp()
                     .Select(p => new AppointmentDto()
                     {
+                        Id = p.Id,
                         Start = p.Start,
                         TreatmentName = p.TreatmentName,
                         Customer = new CustomerDTO
@@ -109,49 +81,22 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
         }
 
-
-        // [HttpGet("{dayOfWeek}")]
-        // public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
-        // {
-        //     var dailyApp = _bookingService.GetDailyApp(dayOfWeek)
-        //             .Select(a => new AppointmentDto
-        //             {
-        //                 Start = a.Start,
-        //                 TreatmentName = a.TreatmentName
-        //             }).ToList();
-        //     return Ok(new AppointmentDtos
-        //     {
-        //         List = dailyApp
-        //     });
-        // }
-        
-
         [HttpPut("{appointmentIdToUpdate}")]
         public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
         {
             var appointment = _bookingService.UpdateAppointment(appointmentIdToUpdate, new Appointment
             {
-                TreatmentName = appointmentDto.TreatmentName,
+                Id = appointmentIdToUpdate,
                 Start = appointmentDto.Start,
-                Customer = new Customer
-                {
-                    Name = appointmentDto.Customer.Name,
-                    Email = appointmentDto.Customer.Email,
-                    PhoneNumber = appointmentDto.Customer.PhoneNumber
-                },
-                Id = appointmentIdToUpdate
+                TreatmentName = appointmentDto.TreatmentName
             });
 
             var newAppointmentDto = new AppointmentDto
             {
+                Id = appointmentIdToUpdate,
                 TreatmentName = appointment.TreatmentName,
                 Start = appointment.Start,
-                Customer = new CustomerDTO
-                {
-                    Name = appointment.Customer.Name,
-                    Email = appointment.Customer.Email,
-                    PhoneNumber = appointment.Customer.PhoneNumber
-                }
+                
             };
             return Ok(newAppointmentDto);
         }
