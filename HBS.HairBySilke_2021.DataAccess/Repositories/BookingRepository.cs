@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
@@ -19,15 +20,24 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public Appointment CreateAppointment(Appointment appointment)
         {
-            var timeslot =
-                _ctx.TimeSlots.FirstOrDefault(ts => ts.Start == appointment.Start);
-            var treatment = _ctx.Treatments.FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
+            var timeslot = _ctx.TimeSlots
+                .FirstOrDefault(ts => ts.Start == appointment.Start);
+            var treatment = _ctx.Treatments
+                .FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
 
             if (treatment == null || timeslot == null) return null;
             var ae = new AppointmentEntity
             {
                 TimeSlotId = timeslot.Id,
-                TimeSlot = timeslot,
+                TimeSlot = new TimeSlotEntity
+                {
+                    Id = timeslot.Id,
+                    DayOfWeek = timeslot.DayOfWeek,
+                    Duration = timeslot.Duration,
+                    End = timeslot.End,
+                    Start = timeslot.Start,
+                    IsAvailable = false
+                },
                 Treatment = treatment,
                 TreatmentId = treatment.Id,
                 Customer = new CustomerEntity
@@ -38,6 +48,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 },
                 CustomerId = appointment.Customer.Id,
             };
+            _ctx.TimeSlots.Remove(timeslot);
+            _ctx.SaveChanges();
             _ctx.Appointments.Add(ae);
             _ctx.SaveChanges();
 
@@ -81,11 +93,13 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public List<Appointment> GetDailyApp(string dayOfWeek)
         {
-            var dow = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dayOfWeek); 
+            var dow = (DayOfWeek) Enum.Parse(typeof(DayOfWeek), dayOfWeek);
             var entityList = _ctx.Appointments
                 .Include(a => a.Treatment)
                 .Include(a => a.TimeSlot)
                 .Where(a => a.TimeSlot.Start.DayOfWeek == dow);
+
+
             var appList = new List<Appointment>();
 
             foreach (var appEntity in entityList)
@@ -100,26 +114,77 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             return appList;
         }
 
-        public Appointment UpdateAppointment(Appointment appointment)
+        public Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment)
         {
-            CustomerEntity customerEntity = _ctx.Customers.FirstOrDefault(c => c.Id == appointment.Customer.Id);
-            var ae = new AppointmentEntity
+            try
             {
-                Customer = customerEntity,
-                CustomerId = appointment.Customer.Id,
-                Id = appointment.Id,
-                TimeSlotId = appointment.TimeSlotId,
-                TreatmentId = appointment.TreatmentId
-            };
-            _ctx.SaveChanges();
-            
-            return appointment;
+                var appointmentToUpdateEntity = _ctx.Appointments
+                    .Include(ae => ae.Customer)
+                    .FirstOrDefault(ae => ae.Id == appointmentIdToUpdate);
+                var timeslotEntity = _ctx.TimeSlots
+                    .FirstOrDefault(tse => tse.Start == updatedAppointment.Start);
+                var treatmentEntity = _ctx.Treatments
+                    .FirstOrDefault(te => te.TreatmentName == updatedAppointment.TreatmentName);
+
+                if (appointmentToUpdateEntity != null && timeslotEntity != null && treatmentEntity != null)
+                {
+                    var updatedAppointmentEntity = new AppointmentEntity
+                    {
+                        Customer = appointmentToUpdateEntity.Customer,
+                        CustomerId = appointmentToUpdateEntity.CustomerId,
+                        Id = appointmentToUpdateEntity.Id,
+                        TimeSlot = timeslotEntity,
+                        TimeSlotId = timeslotEntity.Id,
+                        Treatment = treatmentEntity,
+                        TreatmentId = treatmentEntity.Id
+                    };
+                    _ctx.Appointments.Remove(appointmentToUpdateEntity);
+                    _ctx.Appointments.Add(updatedAppointmentEntity);
+                    _ctx.SaveChanges();
+
+                    return new Appointment
+                    {
+                        Customer = updatedAppointment.Customer,
+                        Id = updatedAppointment.Id,
+                        TimeSlotId = timeslotEntity.Id,
+                        TreatmentId = treatmentEntity.Id,
+                        TreatmentName = updatedAppointmentEntity.Treatment.TreatmentName,
+                        Start = updatedAppointmentEntity.TimeSlot.Start
+                    };
+                }
+            }
+
+            catch (InvalidDataException e)
+            {
+                throw new InvalidDataException();
+            }
+
+            return null;
         }
 
         public void DeleteAppointment(int id)
         {
-            AppointmentEntity appointmentEntity = _ctx.Appointments.FirstOrDefault(a => a.Id == id);
-            _ctx.Appointments.Remove(appointmentEntity);
+            var appointmentEntity = _ctx.Appointments
+                .Include(a => a.TimeSlot)
+                .FirstOrDefault(a => a.Id == id);
+
+            if (appointmentEntity != null)
+            {
+                var timeslot = new TimeSlotEntity
+                {
+                    Id = appointmentEntity.TimeSlot.Id,
+                    DayOfWeek = appointmentEntity.TimeSlot.DayOfWeek,
+                    Duration = appointmentEntity.TimeSlot.Duration,
+                    End = appointmentEntity.TimeSlot.End,
+                    IsAvailable = true,
+                    Start = appointmentEntity.TimeSlot.Start
+                };
+
+                _ctx.Appointments.Remove(appointmentEntity);
+                _ctx.TimeSlots.Remove(appointmentEntity.TimeSlot);
+                _ctx.SaveChanges();
+                _ctx.TimeSlots.Add(timeslot);
+            }
             _ctx.SaveChanges();
         }
 

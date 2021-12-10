@@ -18,6 +18,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
         public List<TimeSlot> GetAvailableTimeSlots()
         {
             var timeslots = _ctx.TimeSlots
+                .Where(ts => ts.IsAvailable == true)
                 .Select(ts => new TimeSlot
                 {
                     Id = ts.Id,

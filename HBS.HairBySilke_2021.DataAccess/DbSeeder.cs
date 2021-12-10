@@ -5,7 +5,7 @@ using HBS.HairBySilke_2021.DataAccess.Entities;
 
 namespace HBS.HairBySilke_2021.DataAccess
 {
-    public class DbSeeder
+    public class DbSeeder: IMainDbSeeder
     {
         private readonly MainDbContext _ctx;
 

@@ -5,6 +5,7 @@ using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using HBS.HariBySilke_2021.WebApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -36,6 +37,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             });
             var appDtoToReturn = new AppointmentDto
             {
+                Id = appointment.Id,
                 Start = appointment.Start,
                 TreatmentName = appointment.TreatmentName,
                 Customer = new CustomerDTO
@@ -49,7 +51,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
 
-
+        [Authorize]
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
@@ -80,7 +82,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-
+        
         [HttpGet("{id}")]
         public ActionResult<AppointmentDto> GetAppointment(int id)
         {
@@ -99,63 +101,33 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             };
             return Ok(appDto);
         }
-
-        // [HttpGet("{dayOfWeek}")]
-        // public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
-        // {
-        //     var dailyApp = _bookingService.GetDailyApp(dayOfWeek)
-        //             .Select(a => new AppointmentDto
-        //             {
-        //                 Start = a.Start,
-        //                 TreatmentName = a.TreatmentName
-        //             }).ToList();
-        //     return Ok(new AppointmentDtos
-        //     {
-        //         List = dailyApp
-        //     });
-        // }
         
-/*
-        [HttpPut]
-        public ActionResult<AppointmentEntity> UpdateAppointment([FromBody] Appointment appointment)
+        [Authorize]
+        [HttpPut("{appointmentIdToUpdate}")]
+        public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
         {
-            var appointmentDto = new AppointmentDto
+            var appointment = _bookingService.UpdateAppointment(appointmentIdToUpdate, new Appointment
             {
-                Id = appointment.Id,
-                Start = appointment.Start,
-                TreatmentName = appointment.TreatmentName,
-                Customer = new CustomerDTO
-                {
-                    Name = appointment.Customer.Name,
-                    Email = appointment.Customer.Email,
-                    PhoneNumber = appointment.Customer.PhoneNumber
-                }
-            };
-            return Ok(appointmentDto);
-        }
-        /*[HttpGet("{dayOfWeek}")]
-        public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
-        {
-            var appointment = _bookingService.UpdateAppointment(new Appointment
-            {
-                TreatmentName = appointmentDto.TreatmentName,
+                Id = appointmentIdToUpdate,
                 Start = appointmentDto.Start,
-                Customer = new Customer
-                {
-                    Name = appointmentDto.Customer.Name,
-                    Email = appointmentDto.Customer.Email,
-                    PhoneNumber = appointmentDto.Customer.PhoneNumber
-                }
+                TreatmentName = appointmentDto.TreatmentName
             });
-            return Ok();
-            //TODO 
-            // skal return det opdaterede object, ikke kun OK()
-        }
 
+            var newAppointmentDto = new AppointmentDto
+            {
+                Id = appointmentIdToUpdate,
+                TreatmentName = appointment.TreatmentName,
+                Start = appointment.Start,
+                
+            };
+            return Ok(newAppointmentDto);
+        }
+        
+        [Authorize]
         [HttpDelete("{id}")]
         public void DeleteAppointment(int id)
         {
             _bookingService.DeleteAppointment(id);
-        }*/
+        }
     }
 }
