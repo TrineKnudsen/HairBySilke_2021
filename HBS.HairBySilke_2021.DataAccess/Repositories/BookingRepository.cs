@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
-using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
 
 namespace HBS.HairBySilke_2021.DataAccess.Repositories

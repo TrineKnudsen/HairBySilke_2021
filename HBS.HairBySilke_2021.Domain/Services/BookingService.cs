@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
@@ -29,7 +28,7 @@ namespace HBS.Domain.Services
         {
             return _repo.GetDailyApp(dayOfWeek);
         }
-        
+
         public Appointment UpdateAppointment(Appointment appointment)
         {
             return _repo.UpdateAppointment(appointment);

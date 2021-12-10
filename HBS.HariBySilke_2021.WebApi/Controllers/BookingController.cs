@@ -48,36 +48,6 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
-        
-        // [HttpGet]
-        // public List<AppointmentDtos> GetAllApp()
-        // {
-        //     try
-        //     {
-        //         var apps = _bookingService.GetAllApp()
-        //             .Select(p => new AppointmentDto()
-        //             {
-        //                 Start = p.Start,
-        //                 TreatmentName = p.TreatmentName,
-        //                 Customer = new CustomerDTO
-        //                 {
-        //                     Name = p.Customer.Name,
-        //                     Email = p.Customer.Email,
-        //                     PhoneNumber = p.Customer.PhoneNumber
-        //                 }
-        //             })
-        //             .ToList();
-        //         
-        //         return Ok(new AppointmentDtos
-        //         {
-        //             List = apps
-        //         });
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         return StatusCode(500, e.Message);
-        //     }
-        // }
 
 
         [HttpGet]
