@@ -5,6 +5,7 @@ using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using HBS.HariBySilke_2021.WebApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -49,7 +50,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
-        
+
+        [Authorize]
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
@@ -81,6 +83,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{appointmentIdToUpdate}")]
         public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
         {
@@ -100,7 +103,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             };
             return Ok(newAppointmentDto);
         }
-
+        
+        [Authorize]
         [HttpDelete("{id}")]
         public void DeleteAppointment(int id)
         {
