@@ -67,7 +67,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
         }
     }
     
-    public class Comparer: IEqualityComparer<Treatment>
+    public partial class Comparer: IEqualityComparer<Treatment>
     {
         public bool Equals(Treatment x, Treatment y)
         {

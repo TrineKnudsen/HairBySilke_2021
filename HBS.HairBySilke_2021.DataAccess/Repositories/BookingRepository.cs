@@ -15,7 +15,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public BookingRepository(MainDbContext ctx)
         {
-            _ctx = ctx;
+            _ctx = ctx ?? throw new InvalidDataException("Booking repository must have a DbContext");
         }
 
         public Appointment CreateAppointment(Appointment appointment)
@@ -25,7 +25,10 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             var treatment = _ctx.Treatments
                 .FirstOrDefault(t => t.TreatmentName == appointment.TreatmentName);
 
-            if (treatment == null || timeslot == null) return null;
+            if (timeslot == null || treatment == null)
+            {
+                throw new NullReferenceException("Noget gik galt. Start forfra...");
+            }
             var ae = new AppointmentEntity
             {
                 TimeSlotId = timeslot.Id,
@@ -185,6 +188,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 _ctx.SaveChanges();
                 _ctx.TimeSlots.Add(timeslot);
             }
+
             _ctx.SaveChanges();
         }
 

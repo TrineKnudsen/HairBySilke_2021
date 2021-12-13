@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -17,8 +18,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         private readonly IBookingService _bookingService;
 
         public BookingController(IBookingService bookingService)
-        {
-            _bookingService = bookingService;
+        { 
+            _bookingService = bookingService ?? throw new InvalidDataException();
         }
 
         [HttpPost]
