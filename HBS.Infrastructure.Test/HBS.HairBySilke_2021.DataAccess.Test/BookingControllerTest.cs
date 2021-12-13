@@ -37,7 +37,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
         }
 
         [Fact]
-        public void CreateBookingEntity_WithNullTreatmentEntityTimeSlotEntity_ThrowsNullReferenceException()
+        public void CreateBookingEntity_WithNullTreatmentEntityTimeSlotEntityCustomerEntity_ThrowsNullReferenceException()
         {
             //Arrange
             var fakeContext = Create.MockedDbContextFor<MainDbContext>();
@@ -55,6 +55,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             };
             Assert.Throws<NullReferenceException>(() => repository.CreateAppointment(appointment));
         }
+
     }
 
     public partial class Comparer : IEqualityComparer<Appointment>

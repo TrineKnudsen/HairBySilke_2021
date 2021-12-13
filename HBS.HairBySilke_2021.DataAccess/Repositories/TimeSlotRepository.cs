@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
@@ -12,7 +13,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public TimeSlotRepository(MainDbContext ctx)
         {
-            _ctx = ctx;
+            _ctx = ctx ?? throw new InvalidDataException("TimeslotRepository skal have en DBContext");
         }
 
         public List<TimeSlot> GetAvailableTimeSlots()
@@ -24,6 +25,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                     Id = ts.Id,
                     IsAvailable = ts.IsAvailable,
                     Start = ts.Start,
+                    End = ts.End,
                     Duration = ts.Duration
                 }).ToList();
 
@@ -32,7 +34,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public List<TimeSlot> GetAvailableTimeSlotsByTreatment(double duration)
         {
-            var timeslots = GetAvailableTimeSlots().Where(ts => Math.Abs(ts.Duration.TotalMinutes - duration) < 0.2)
+            var timeslots = GetAvailableTimeSlots().Where(
+                    ts => Math.Abs(ts.Duration.TotalMinutes - duration) < 0.2)
                 .ToList();
 
             return timeslots;
