@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Security.Authentication;
 using HBS.HairBySilke_2021.Security.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
 
         public AuthController(ISecurityService securityService)
         {
-            _securityService = securityService;
+            _securityService = securityService  ?? throw new InvalidDataException();
         }
         
         [AllowAnonymous]
@@ -37,7 +38,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "Kontakt adminstrator.");
+                return StatusCode(500, "Ring 8X8");
             }
         }
     }
