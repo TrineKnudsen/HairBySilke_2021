@@ -37,22 +37,23 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
         }
 
         [Fact]
-        public void CreateBookingEntity_WithNullTreatmentEntityTimeSlotEntityCustomerEntity_ThrowsNullReferenceException()
+        public void CreateBookingEntity_WithNullTreatmentEntityTimeSlotEntity_ThrowsNullReferenceException()
         {
             //Arrange
             var fakeContext = Create.MockedDbContextFor<MainDbContext>();
             var repository = new BookingRepository(fakeContext);
-            var appointmentEntity = new AppointmentEntity
-            {
-                Customer = null,
-                TimeSlot = null,
-                Treatment = null
-            };
             var appointment = new Appointment
             {
-                
-            }
-            Assert.Throws<NullReferenceException>(() => repository.CreateAppointment(appointmentEntity));
+                Customer = new Customer
+                {
+                    Email = "trine@hotmail.com",
+                    Id = 1,
+                    Name = "Trine Knudsen",
+                    PhoneNumber = "12345678"
+                },
+                Id = 1,
+            };
+            Assert.Throws<NullReferenceException>(() => repository.CreateAppointment(appointment));
         }
     }
 

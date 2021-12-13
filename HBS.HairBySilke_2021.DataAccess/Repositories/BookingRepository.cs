@@ -27,7 +27,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
             if (timeslot == null || treatment == null)
             {
-                throw new NullReferenceException("Noget gik galt. Start forfra...");
+                throw new NullReferenceException();
             }
             var ae = new AppointmentEntity
             {
