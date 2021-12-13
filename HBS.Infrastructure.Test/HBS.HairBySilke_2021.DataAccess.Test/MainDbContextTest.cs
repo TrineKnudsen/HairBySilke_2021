@@ -22,5 +22,26 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             var mockedObject = Create.MockedDbContextFor<MainDbContext>();
             Assert.True(mockedObject.Treatments is DbSet<TreatmentEntity>);
         }
+        
+        [Fact]
+        public void DbContext_DbSets_MustHaveDbSetWithTypeAppointmentEntity()
+        {
+            var mockedObject = Create.MockedDbContextFor<MainDbContext>();
+            Assert.True(mockedObject.Appointments is DbSet<AppointmentEntity>);
+        }
+        
+        [Fact]
+        public void DbContext_DbSets_MustHaveDbSetWithTypeTimeSlotEntity()
+        {
+            var mockedObject = Create.MockedDbContextFor<MainDbContext>();
+            Assert.True(mockedObject.TimeSlots is DbSet<TimeSlotEntity>);
+        }
+        
+        [Fact]
+        public void DbContext_DbSets_MustHaveDbSetWithTypeCustomerEntity()
+        {
+            var mockedObject = Create.MockedDbContextFor<MainDbContext>();
+            Assert.True(mockedObject.Customers is DbSet<CustomerEntity>);
+        }
     }
 }
