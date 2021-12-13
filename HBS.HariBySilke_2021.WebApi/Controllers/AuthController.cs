@@ -35,7 +35,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             {
                 return Unauthorized(ae.Message);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500, "Kontakt adminstrator.");
             }

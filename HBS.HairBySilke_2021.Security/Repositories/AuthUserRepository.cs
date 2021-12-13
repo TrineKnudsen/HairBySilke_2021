@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using HBS.HairBySilke_2021.Security.IRepositories;
@@ -14,13 +15,16 @@ namespace HBS.HairBySilke_2021.Security.Repositories
             _ctx = ctx;
         }
 
-        public AuthUser FindByUsernameAndPassword(string username, string hashedpassword)
+        public AuthUser? FindByUsernameAndPassword(string username, string hashedPassword)
         {
             var entity = _ctx.AuthUsers
                 .FirstOrDefault(user =>
-                    hashedpassword.Equals(user.HashedPassword) &&
+                    hashedPassword.Equals(user.HashedPassword) &&
                     username.Equals(user.Username));
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                throw new NullReferenceException();
+            };
             return new AuthUser
             {
                 Id = entity.Id,
@@ -32,7 +36,10 @@ namespace HBS.HairBySilke_2021.Security.Repositories
         {
             var entity = _ctx.AuthUsers
                 .FirstOrDefault(user => username.Equals(user.Username));
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                throw new NullReferenceException();
+            };
             return new AuthUser
             {
                 Id = entity.Id,
