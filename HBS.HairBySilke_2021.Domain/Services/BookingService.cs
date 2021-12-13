@@ -24,11 +24,6 @@ namespace HBS.Domain.Services
             return _repo.ReadAllApp();
         }
 
-        public List<Appointment> GetDailyApp(string dayOfWeek)
-        {
-            return _repo.GetDailyApp(dayOfWeek);
-        }
-
         public Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment)
         {
             return _repo.UpdateAppointment(appointmentIdToUpdate, updatedAppointment);

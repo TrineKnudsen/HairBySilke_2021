@@ -8,8 +8,6 @@ namespace HBS.Domain.IRepositories
         Appointment CreateAppointment(Appointment appointment);
 
         List<Appointment> ReadAllApp();
-
-        List<Appointment> GetDailyApp(string dayOfWeek);
         Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment);
         void DeleteAppointment(int id);
 
