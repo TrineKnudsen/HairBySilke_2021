@@ -83,26 +83,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-        
-        [HttpGet("{id}")]
-        public ActionResult<AppointmentDto> GetAppointment(int id)
-        {
-            var appointment = _bookingService.GetAppointment(id);
-            var appDto = new AppointmentDto
-            {
-                Customer = new CustomerDTO
-                {
-                    Email = appointment.Customer.Email,
-                    Name = appointment.Customer.Name,
-                    PhoneNumber = appointment.Customer.PhoneNumber
-                },
-                Id = appointment.Id,
-                Start = appointment.Start,
-                TreatmentName = appointment.TreatmentName
-            };
-            return Ok(appDto);
-        }
-        
+
         [Authorize]
         [HttpPut("{appointmentIdToUpdate}")]
         public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
