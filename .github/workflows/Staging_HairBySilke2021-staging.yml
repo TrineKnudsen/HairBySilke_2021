@@ -52,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'HairBySilke2021-staging'
-          slot-name: 'Production'
+          slot-name: 'Staging'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_067D4F5DB4F84C60BC71984F3779E35E }}
           package: .
