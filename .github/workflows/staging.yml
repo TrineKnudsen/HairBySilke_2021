@@ -4,7 +4,7 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - HairBySilke2021
 
 on:
-  pull:
+  push:
     branches:
       - Staging
   workflow_dispatch:
