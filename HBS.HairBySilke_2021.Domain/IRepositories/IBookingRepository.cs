@@ -10,7 +10,5 @@ namespace HBS.Domain.IRepositories
         List<Appointment> ReadAllApp();
         Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment);
         void DeleteAppointment(int id);
-
-        Appointment GetAppointment(int id);
     }
 }

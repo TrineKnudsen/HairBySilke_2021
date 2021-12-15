@@ -33,10 +33,5 @@ namespace HBS.Domain.Services
         {
             _repo.DeleteAppointment(id);
         }
-
-        public Appointment GetAppointment(int id)
-        {
-            return _repo.GetAppointment(id);
-        }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
+using HBS.HairBySilke_2021.DataAccess.Converters;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
     public class BookingRepository : IBookingRepository
     {
         private readonly MainDbContext _ctx;
+        private readonly AppointmentConverter _appointmentConverter;
 
         public BookingRepository(MainDbContext ctx)
         {
+            _appointmentConverter = new AppointmentConverter();
             _ctx = ctx ?? throw new InvalidDataException("Booking repository must have a DbContext");
         }
 
@@ -62,22 +65,9 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             _ctx.SaveChanges();
             _ctx.Appointments.Add(ae);
             _ctx.SaveChanges();
-
-            var app = new Appointment
-            {
-                Id = ae.Id,
-                TimeSlotId = ae.TimeSlotId,
-                TreatmentId = ae.TreatmentId,
-                TreatmentName = ae.Treatment.TreatmentName,
-                Start = ae.TimeSlot.Start,
-                Customer = new Customer
-                {
-                    Email = ae.Customer.Email,
-                    Name = ae.Customer.Name,
-                    PhoneNumber = ae.Customer.PhoneNumber,
-                    Id = ae.CustomerId
-                }
-            };
+            
+            var app = _appointmentConverter.Convert(ae);
+            
             return app;
         }
 
@@ -135,17 +125,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             _ctx.Appointments.Add(updatedAppointmentEntity);
             _ctx.SaveChanges();
 
-            return new Appointment
-            {
-                Customer = new Customer {
-                    Email = updatedAppointmentEntity.Customer.Email, Id = updatedAppointmentEntity.Customer.Id,
-                    Name = updatedAppointmentEntity.Customer.Name, PhoneNumber = updatedAppointmentEntity.Customer.PhoneNumber},
-                Id = updatedAppointmentEntity.Id,
-                TimeSlotId = timeslotEntity.Id,
-                TreatmentId = treatmentEntity.Id,
-                TreatmentName = updatedAppointmentEntity.Treatment.TreatmentName,
-                Start = updatedAppointmentEntity.TimeSlot.Start
-            };
+            return _appointmentConverter.Convert(updatedAppointmentEntity);
         }
 
         public void DeleteAppointment(int id)
@@ -174,32 +154,6 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
             _ctx.TimeSlots.Add(timeslot);
 
             _ctx.SaveChanges();
-        }
-
-        public Appointment GetAppointment(int id)
-        {
-            var appointmentEntity = _ctx.Appointments
-                .Include(a => a.TimeSlot)
-                .Include(a => a.Customer)
-                .Include(a => a.Treatment)
-                .FirstOrDefault(a => a.Id == id);
-
-            var appointment = new Appointment
-            {
-                Id = appointmentEntity.Id,
-                Start = appointmentEntity.TimeSlot.Start,
-                TimeSlotId = appointmentEntity.TimeSlot.Id,
-                TreatmentId = appointmentEntity.Treatment.Id,
-                TreatmentName = appointmentEntity.Treatment.TreatmentName,
-                Customer = new Customer
-                {
-                    Email = appointmentEntity.Customer.Email,
-                    Id = appointmentEntity.Customer.Id,
-                    Name = appointmentEntity.Customer.Name,
-                    PhoneNumber = appointmentEntity.Customer.PhoneNumber
-                }
-            };
-            return appointment;
         }
     }
 }

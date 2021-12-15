@@ -45,7 +45,7 @@ namespace HBS.HairBySilke_2021.DataAccess
         private TimeSlotEntity[] GetAvailableTimeSlots()
         {
             var minDateTime = DateTime.Now;
-            var maxDateTime = new DateTime(2022, 03, 4, 16, 0, 0);
+            var maxDateTime = minDateTime.AddDays(90);
 
             var allDates = new List<DateTime>();
             var entities = new List<TimeSlotEntity>();

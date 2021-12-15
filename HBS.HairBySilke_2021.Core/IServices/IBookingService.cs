@@ -12,7 +12,5 @@ namespace HBS.HairBySilke_2021.Core.IServices
         List<Appointment> GetAllApp();
         Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment);
         void DeleteAppointment(int id);
-
-        Appointment GetAppointment(int id);
     }
 }
