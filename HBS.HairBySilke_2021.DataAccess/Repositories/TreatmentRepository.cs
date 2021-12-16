@@ -26,10 +26,5 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
                 })
                 .ToList();
         }
-
-        public Treatment UpdateTreatment(Treatment treatmentToUpdate)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
