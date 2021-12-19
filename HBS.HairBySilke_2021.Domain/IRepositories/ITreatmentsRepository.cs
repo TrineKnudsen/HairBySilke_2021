@@ -6,8 +6,7 @@ namespace HBS.Domain.IRepositories
     public interface ITreatmentsRepository
     {
         List<Treatment> ReadAllTreatments();
-
-        Treatment UpdateTreatment(Treatment treatmentToUpdate);
+        
         
     }
 }

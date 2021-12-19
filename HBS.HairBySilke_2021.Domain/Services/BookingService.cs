@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.IO;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -12,6 +12,10 @@ namespace HBS.Domain.Services
 
         public BookingService(IBookingRepository repo)
         {
+            if (repo == null)
+            {
+                throw new InvalidDataException("Repository cannot be null");
+            }
             _repo = repo;
         }
 
@@ -25,9 +29,14 @@ namespace HBS.Domain.Services
             return _repo.ReadAllApp();
         }
 
-        public List<Appointment> GetDailyApp(string dayOfWeek)
+        public Appointment UpdateAppointment(int appointmentIdToUpdate, Appointment updatedAppointment)
         {
-            return _repo.GetDailyApp(dayOfWeek);
+            return _repo.UpdateAppointment(appointmentIdToUpdate, updatedAppointment);
+        }
+
+        public void DeleteAppointment(int id)
+        {
+            _repo.DeleteAppointment(id);
         }
     }
 }

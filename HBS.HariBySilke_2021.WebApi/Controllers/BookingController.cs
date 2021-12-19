@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
+using HBS.HairBySilke_2021.DataAccess.Entities;
 using HBS.HariBySilke_2021.WebApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HBS.HariBySilke_2021.WebApi.Controllers
@@ -15,8 +18,8 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
         private readonly IBookingService _bookingService;
 
         public BookingController(IBookingService bookingService)
-        {
-            _bookingService = bookingService;
+        { 
+            _bookingService = bookingService ?? throw new InvalidDataException();
         }
 
         [HttpPost]
@@ -35,6 +38,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             });
             var appDtoToReturn = new AppointmentDto
             {
+                Id = appointment.Id,
                 Start = appointment.Start,
                 TreatmentName = appointment.TreatmentName,
                 Customer = new CustomerDTO
@@ -48,6 +52,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             return Created($"https//:localhost/api/booking",appDtoToReturn);
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<AppointmentDtos> GetAllApp()
         {
@@ -56,6 +61,7 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
                 var apps = _bookingService.GetAllApp()
                     .Select(p => new AppointmentDto()
                     {
+                        Id = p.Id,
                         Start = p.Start,
                         TreatmentName = p.TreatmentName,
                         Customer = new CustomerDTO
@@ -78,20 +84,32 @@ namespace HBS.HariBySilke_2021.WebApi.Controllers
             }
         }
 
-        /*[HttpGet("{dayOfWeek}")]
-        public ActionResult<AppointmentDtos> ReadDailyApp(string dayOfWeek)
+        [Authorize]
+        [HttpPut("{appointmentIdToUpdate}")]
+        public ActionResult<AppointmentDto> UpdateAppointment(int appointmentIdToUpdate, [FromBody] AppointmentDto appointmentDto)
         {
-            var dailyApp = _bookingService.GetDailyApp(dayOfWeek)
-                    .Select(a => new AppointmentDto
-                    {
-                        Start = a.Start,
-                        TreatmentName = a.TreatmentName
-                    }).ToList();
-            return Ok(new AppointmentDtos
+            var appointment = _bookingService.UpdateAppointment(appointmentIdToUpdate, new Appointment
             {
-                List = dailyApp
+                Id = appointmentIdToUpdate,
+                Start = appointmentDto.Start,
+                TreatmentName = appointmentDto.TreatmentName
             });
-        }*/
+
+            var newAppointmentDto = new AppointmentDto
+            {
+                Id = appointmentIdToUpdate,
+                TreatmentName = appointment.TreatmentName,
+                Start = appointment.Start,
+                
+            };
+            return Ok(newAppointmentDto);
+        }
         
+        [Authorize]
+        [HttpDelete("{id}")]
+        public void DeleteAppointment(int id)
+        {
+            _bookingService.DeleteAppointment(id);
+        }
     }
 }

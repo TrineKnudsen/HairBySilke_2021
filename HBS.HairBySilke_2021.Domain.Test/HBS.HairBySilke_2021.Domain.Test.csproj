@@ -4,4 +4,18 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="EntityFrameworkCore.Testing.Moq" Version="3.0.3" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+      <PackageReference Include="Moq" Version="4.16.1" />
+      <PackageReference Include="xunit" Version="2.4.1" />
+      <PackageReference Include="xunit.assert" Version="2.4.1" />
+      <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\HBS.HairBySilke_2021.DataAccess\HBS.HairBySilke_2021.DataAccess.csproj" />
+      <ProjectReference Include="..\HBS.HairBySilke_2021.Domain\HBS.HairBySilke_2021.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
