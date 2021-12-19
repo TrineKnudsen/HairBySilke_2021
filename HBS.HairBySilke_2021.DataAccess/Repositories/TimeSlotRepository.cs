@@ -34,6 +34,10 @@ namespace HBS.HairBySilke_2021.DataAccess.Repositories
 
         public List<TimeSlot> GetAvailableTimeSlotsByTreatment(double duration)
         {
+            if (duration < 30)
+            {
+                throw new InvalidDataException("Vælg en behandling du ønsker at bestille tid til.");
+            }
             var timeslots = GetAvailableTimeSlots().Where(
                     ts => Math.Abs(ts.Duration.TotalMinutes - duration) < 0.2)
                 .ToList();

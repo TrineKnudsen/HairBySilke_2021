@@ -36,7 +36,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
         }
 
         [Fact]
-        public void FindAll_GetAllTimeslotEntitiesInDbContext_AsListOfTimeslots()
+        public void FindAll_GetAllTimeslotEntitiesInDbContext_ReturnsAsListOfTimeslots()
         {
             //Arrange
             var fakeContext = Create.MockedDbContextFor<MainDbContext>();
@@ -72,7 +72,17 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
         }
 
         [Fact]
-        public void FindAllAvailableTimeslots_ByTreatment()
+        public void FindAllAvailableTimeSlots_WithParamDurationTooSmall_ThrowInvalidDataExceptionWithMessage()
+        {
+            var fakeContext = Create.MockedDbContextFor<MainDbContext>();
+            var repository = new TimeSlotRepository(fakeContext);
+            var exception = Assert
+                .Throws<InvalidDataException>(() => repository.GetAvailableTimeSlotsByTreatment(20));
+            Assert.Equal("Vælg en behandling du ønsker at bestille tid til.", exception.Message);
+        }
+
+        [Fact]
+        public void FindAllAvailableTimeslots_ByTreatment_ReturnsAListOfAvailableTimeSlots()
         {
             //Arrange
             var fakeContext = Create.MockedDbContextFor<MainDbContext>();
@@ -85,30 +95,40 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             fakeContext.SaveChanges();
             var timeslotEntity = new List<TimeSlotEntity>
             {
-                new TimeSlotEntity{
+                new TimeSlotEntity
+                {
                     DayOfWeek = "Friday",
-                Start = new DateTime(2022, 12, 10, 10, 0, 0),
-                End = new DateTime(2022, 12, 10, 12, 0, 0),
-                Duration = new DateTime(2022, 12, 10, 12, 0, 0)
-                           - new DateTime(2022, 12, 10, 10, 0, 0),
-                IsAvailable = true
+                    Start = new DateTime(2022, 12, 10, 10, 0, 0),
+                    End = new DateTime(2022, 12, 10, 12, 0, 0),
+                    Duration = new DateTime(2022, 12, 10, 12, 0, 0)
+                               - new DateTime(2022, 12, 10, 10, 0, 0),
+                    IsAvailable = true
+                },
+                new TimeSlotEntity
+                {
+                    DayOfWeek = "Friday",
+                    Start = new DateTime(2022, 12, 10, 12, 0, 0),
+                    End = new DateTime(2022, 12, 10, 13, 0, 0),
+                    Duration = new DateTime(2022, 12, 10, 13, 0, 0)
+                               - new DateTime(2022, 12, 10, 12, 0, 0),
+                    IsAvailable = false
                 }
             };
             fakeContext.Set<TimeSlotEntity>().AddRange(timeslotEntity);
             fakeContext.SaveChanges();
 
-            var expectedlist = timeslotEntity.Select(te => new TimeSlot
+            var expectedList = new List<TimeSlot>();
+            expectedList.Add(new TimeSlot
             {
-                Id = te.Id,
-                Start = te.Start,
-                End = te.End,
-                Duration = te.Duration,
-                IsAvailable = true,
-            }).ToList();
-            
+                Start = new DateTime(2022, 12, 10, 10, 0, 0),
+                End = new DateTime(2022, 12, 10, 12, 0, 0),
+                Duration = new DateTime(2022, 12, 10, 12, 0, 0) - new DateTime(2022, 12, 10, 10, 0, 0),
+                Id = 1, IsAvailable = true
+            });
+
             var actual = repository.GetAvailableTimeSlotsByTreatment(120);
-            
-            Assert.Equal(expectedlist, actual, new Comparer());
+
+            Assert.Equal(expectedList, actual, new Comparer());
         }
     }
 

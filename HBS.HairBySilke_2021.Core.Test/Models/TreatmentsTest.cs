@@ -5,18 +5,23 @@ namespace HBS.HairBySilke_2021.Core.Test
 {
     public class TreatmentsTest
     {
+        private readonly TestHelper _helper;
+
+        public TreatmentsTest()
+        {
+            _helper = new TestHelper();
+        }
+        
         [Fact]
         public void Treatment_CanBeInitialized()
         {
-            var treatment = new Treatment();
-            Assert.NotNull(treatment);
+            Assert.NotNull(_helper.GetTreatment());
         }
         
         [Fact]
         public void Product_SetId_StoresId()
         {
-            var treatment = new Treatment();
-            treatment.Id = 1;
+            var treatment = _helper.GetTreatment(1);
             Assert.Equal(1, treatment.Id);
         }
 

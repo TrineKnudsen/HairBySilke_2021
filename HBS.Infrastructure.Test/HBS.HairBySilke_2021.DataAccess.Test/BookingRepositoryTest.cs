@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using EntityFrameworkCore.Testing.Moq;
-using EntityFrameworkCore.Testing.Moq.Helpers;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.Models;
 using HBS.HairBySilke_2021.DataAccess.Entities;
 using HBS.HairBySilke_2021.DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using Xunit;
 
 namespace HBS.HairBySilke_2021.DataAccess.Test
@@ -59,7 +55,8 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             _fakeCtx.Set<AppointmentEntity>().AddRange(appointmentEntity1, appointmentEntity2);
             _fakeCtx.SaveChanges();
         }
-        
+
+        #region Intialization
         [Fact]
         public void BookingRepository_IsIBookingRepository()
         {
@@ -79,34 +76,9 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
                 .Throws<InvalidDataException>(() => new BookingRepository(null));
             Assert.Equal("Booking repository must have a DbContext", exception.Message);
         }
-        
-        [Fact]
-        public void FindAll_GetAllAppointmentEntitiesInDbContext_AsListOfAppointment()
-        {
-            //Arrange
-            var expectedList = _fakeCtx.Appointments.Select(te => new Appointment
-            {
-                Id = te.Id,
-                TreatmentName = te.Treatment.TreatmentName,
-                Customer = new Customer
-                {
-                    Email = te.Customer.Email,
-                    Id = te.Customer.Id,
-                    Name = te.Customer.Name,
-                    PhoneNumber = te.Customer.PhoneNumber
-                },
-                TimeSlotId = te.TimeSlot.Id,
-                TreatmentId = te.Treatment.Id,
-                Start = te.TimeSlot.Start
-            }).ToList();
-            
-            //Act
-            var actualResult = _repository.ReadAllApp();
-            
-            //Assert
-            Assert.Equal(expectedList, actualResult, new Comparer());
-        }
+        #endregion
 
+        #region Create
         [Fact]
         public void CreateBooking_WithParam_ReturnsNewBooking()
         {
@@ -192,7 +164,38 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
                 .Throws<InvalidDataException>(() => _repository.CreateAppointment(appointment));
             Assert.Equal("Noget gik galt. Skriv kontaktoplysninger igen...", exception.Message);
         }
-        
+        #endregion
+
+        #region Read
+        [Fact]
+        public void FindAll_GetAllAppointmentEntitiesInDbContext_AsListOfAppointment()
+        {
+            //Arrange
+            var expectedList = _fakeCtx.Appointments.Select(te => new Appointment
+            {
+                Id = te.Id,
+                TreatmentName = te.Treatment.TreatmentName,
+                Customer = new Customer
+                {
+                    Email = te.Customer.Email,
+                    Id = te.Customer.Id,
+                    Name = te.Customer.Name,
+                    PhoneNumber = te.Customer.PhoneNumber
+                },
+                TimeSlotId = te.TimeSlot.Id,
+                TreatmentId = te.Treatment.Id,
+                Start = te.TimeSlot.Start
+            }).ToList();
+            
+            //Act
+            var actualResult = _repository.ReadAllApp();
+            
+            //Assert
+            Assert.Equal(expectedList, actualResult, new Comparer());
+        }
+        #endregion
+
+        #region Update
         [Fact]
         public void UpdateAppointment_WithNullAppointmentToUpdateId_ReturnsNullReferenceExceptionWithMessage(){
             //Arrange
@@ -261,7 +264,9 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
             var actual = _repository.UpdateAppointment(1, updatedAppointment);
             Assert.Equal(expectedAppointment, actual, new Comparer());
         }
+        #endregion
 
+        #region Delete
         [Fact]
         public void DeleteAppointment_WithParamNullId_ThrowsNullReferenceException()
         {
@@ -269,6 +274,7 @@ namespace HBS.HairBySilke_2021.DataAccess.Test
                 .Throws<NullReferenceException>(() => _repository.DeleteAppointment(0));
             Assert.Equal("Noget gik galt. Vælg den aftale der skal aflyses", exception.Message);
         }
+        #endregion
     }
 
     public partial class Comparer : IEqualityComparer<Appointment>
