@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -11,7 +12,7 @@ namespace HBS.Domain.Services
 
         public TimeSlotService(ITimeSlotRepository repo)
         {
-            _repo = repo;
+            _repo = repo ?? throw new InvalidDataException("TimeSlotRepository cannot be null");
         }
         
         public List<TimeSlot> GetAvailableTimeSlots()

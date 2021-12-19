@@ -1,7 +1,7 @@
 ﻿using HBS.HairBySilke_2021.Core.Models;
 using Xunit;
 
-namespace HBS.HairBySilke_2021.Core.Test
+namespace HBS.HairBySilke_2021.Core.Test.Models
 {
     public class TreatmentsTest
     {
@@ -19,18 +19,30 @@ namespace HBS.HairBySilke_2021.Core.Test
         }
         
         [Fact]
-        public void Product_SetId_StoresId()
+        public void Treatment_SetId_StoresId()
         {
             var treatment = _helper.GetTreatment(1);
             Assert.Equal(1, treatment.Id);
         }
 
         [Fact]
-        public void Product_SetName_StoreNamesString()
+        public void Treatment_SetName_StoreNamesString()
         {
             var treatment = new Treatment();
             treatment.TreatmentName = "Helfarve - langt hår";
             Assert.Equal("Helfarve - langt hår", treatment.TreatmentName);
+        }
+
+        [Fact]
+        public void Treatment_AttributePrice_IsOfTypeInt()
+        {
+            Assert.True(_helper.GetTreatment(1).Price is int);
+        }
+
+        [Fact]
+        public void Treatment_AttriDuration_IsOftypeInt()
+        {
+            Assert.True(_helper.GetTreatment(1).Duration is int);
         }
     }
     
