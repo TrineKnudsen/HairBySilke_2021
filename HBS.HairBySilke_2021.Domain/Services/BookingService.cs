@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using HBS.Domain.IRepositories;
 using HBS.HairBySilke_2021.Core.IServices;
 using HBS.HairBySilke_2021.Core.Models;
@@ -11,6 +12,10 @@ namespace HBS.Domain.Services
 
         public BookingService(IBookingRepository repo)
         {
+            if (repo == null)
+            {
+                throw new InvalidDataException("Repository cannot be null");
+            }
             _repo = repo;
         }
 
