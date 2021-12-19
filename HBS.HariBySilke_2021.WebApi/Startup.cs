@@ -143,7 +143,6 @@ namespace HBS.HariBySilke_2021.WebApi
             }
             else
             {
-                app.UseCors("Prod-cord");
                 mainCtx.SeedProduction();
             }
 
