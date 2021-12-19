@@ -39,7 +39,7 @@ namespace HBS.HairBySilke_2021.Core.Test.Models
         {
             var timeslot = new TimeSlot();
             timeslot.End = new DateTime(2022,08,12,13,0,0);
-            Assert.Equal(new DateTime(2022,08,12,13,0,0), timeslot.Start);
+            Assert.Equal(new DateTime(2022,08,12,13,0,0), timeslot.End);
         }
 
         [Fact]
