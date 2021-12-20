@@ -109,7 +109,6 @@ namespace HBS.HariBySilke_2021.WebApi
             });
             
             
-            
             services.AddCors(options =>
             {
                 options.AddPolicy("Dev-cors", policy =>
@@ -121,21 +120,14 @@ namespace HBS.HariBySilke_2021.WebApi
                         .AllowAnyMethod();
 
                 });
-            });
-            
-            services.AddCors(options =>
-            {
                 options.AddPolicy("prod-cors", policy =>
-
                 {
                     policy
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-
                 });
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -154,12 +146,12 @@ namespace HBS.HariBySilke_2021.WebApi
                 mainCtx.SeedDevelopment();
                 authCtx.SeedDevelopment();
             }
-            else if (env.IsProduction())
+            else
             {
                 app.UseCors("prod-cors");
                 
-                mainCtx.SeedDevelopment();
-                authCtx.SeedDevelopment();
+                mainCtx.SeedProduction();
+                authCtx.SeedProduction();
             }
 
             app.UseHttpsRedirection();

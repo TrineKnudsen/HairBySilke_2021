@@ -32,15 +32,18 @@ namespace HBS.HairBySilke_2021.DataAccess
         {
             _ctx.Database.EnsureCreated();
 
-            var treatments = GetTreatments();
-            _ctx.Treatments.AddRange(treatments);
-            _ctx.SaveChanges();
+            var countTs = _ctx.TimeSlots.Count();
+            var count = _ctx.Treatments.Count();
+            if (count == 0 && countTs == 0)
+            {
+                var treatments = GetTreatments();
+                _ctx.Treatments.AddRange(treatments);
+                _ctx.SaveChanges();
 
-            var timeSlots = GetAvailableTimeSlots();
-            _ctx.TimeSlots.AddRange(timeSlots);
-            _ctx.SaveChanges();
-            
-            _ctx.SaveChanges();
+                var timetimeslots = GetAvailableTimeSlots();
+                _ctx.TimeSlots.AddRange(timetimeslots);
+                _ctx.SaveChanges();
+            }
         }
 
         private TimeSlotEntity[] GetAvailableTimeSlots()
