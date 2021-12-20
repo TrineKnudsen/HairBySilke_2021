@@ -122,6 +122,19 @@ namespace HBS.HariBySilke_2021.WebApi
 
                 });
             });
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("prod-cors", policy =>
+
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+
+                });
+            });
 
         }
 
@@ -141,9 +154,12 @@ namespace HBS.HariBySilke_2021.WebApi
                 mainCtx.SeedDevelopment();
                 authCtx.SeedDevelopment();
             }
-            else
+            else if (env.IsProduction())
             {
-                mainCtx.SeedProduction();
+                app.UseCors("prod-cors");
+                
+                mainCtx.SeedDevelopment();
+                authCtx.SeedDevelopment();
             }
 
             app.UseHttpsRedirection();

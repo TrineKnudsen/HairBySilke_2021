@@ -34,10 +34,12 @@ namespace HBS.HairBySilke_2021.DataAccess
 
             var treatments = GetTreatments();
             _ctx.Treatments.AddRange(treatments);
+            _ctx.SaveChanges();
 
             var timeSlots = GetAvailableTimeSlots();
             _ctx.TimeSlots.AddRange(timeSlots);
-
+            _ctx.SaveChanges();
+            
             _ctx.SaveChanges();
         }
 
