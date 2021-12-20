@@ -123,7 +123,8 @@ namespace HBS.HariBySilke_2021.WebApi
                 options.AddPolicy("Prod-cors", policy =>
                 {
                     policy
-                        .WithOrigins("eksamen2021-a2613.firebaseapp.com")
+                        .WithOrigins("https://eksamen2021-a2613.web.app",
+                            "https://eksamen2021-a2613.firebaseapp.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
