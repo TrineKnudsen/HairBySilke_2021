@@ -54,7 +54,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'HairBySilke2021'
+          app-name: 'HairBySilke2021v2'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FF8135BCFD447088C2EC8A20CC0FC2B }}
           package: .
