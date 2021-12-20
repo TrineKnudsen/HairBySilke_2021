@@ -120,10 +120,10 @@ namespace HBS.HariBySilke_2021.WebApi
                         .AllowAnyMethod();
 
                 });
-                options.AddPolicy("prod-cors", policy =>
+                options.AddPolicy("Prod-cors", policy =>
                 {
                     policy
-                        .AllowAnyOrigin()
+                        .WithOrigins("eksamen2021-a2613.firebaseapp.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -148,7 +148,7 @@ namespace HBS.HariBySilke_2021.WebApi
             }
             else
             {
-                app.UseCors("prod-cors");
+                app.UseCors("Prod-cors");
                 
                 mainCtx.SeedProduction();
                 authCtx.SeedProduction();
